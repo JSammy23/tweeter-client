@@ -5,8 +5,8 @@ import Loading from '../../components/Loading/Loading';
 
 
 import styled from 'styled-components';
-import { Background } from 'styles/styledComponents';
-import 'pages/LoginPage/LoginPage.Styles.css';
+import { Background } from '../../styles/styledComponents'
+import '../LoginPage/LoginPage.Styles.css';
 
 /**** TO-DO *******/
 // Correct form for backend user
@@ -79,7 +79,7 @@ const SignUpPage = () => {
                     </div>
                     <div className="user-box">
                         <input type="text" name='userName' id='userName' value={userName} onChange={(e) => setUserName(e.target.value)} onBlur={handleInputChange} onFocus={handleInputChange} />
-                        <label htmlFor="userName" >UserName</label>
+                        <label htmlFor="userName" >Username</label>
                     </div>
                     <div className="user-box">
                         <input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleInputChange} onFocus={handleInputChange} />

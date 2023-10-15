@@ -4,7 +4,7 @@ import { loginUser } from "../../api";
 
 import './LoginPage.Styles.css'; 
 import styled from "styled-components";  
-import { Background } from 'styles/styledComponents';
+import { Background } from '../../styles/styledComponents'
 
 
 // TODO:
