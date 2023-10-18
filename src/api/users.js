@@ -38,3 +38,38 @@ export const loginUser = async (credentials) => {
     localStorage.setItem('token', data.token);
     return data;
 };
+
+// Fetch User
+export const fetchUser = async (userId) => {
+    const response = await fetch(`${BASE_URL}/${userId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+    const user = await response.json();
+    return user;
+}
+
+export const fetchCurrentUser = async () => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(BASE_URL, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        }
+    })
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const currentUser = await response.json();
+    return currentUser;
+};
