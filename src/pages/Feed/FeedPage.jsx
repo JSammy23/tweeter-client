@@ -1,11 +1,13 @@
-// import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Sidebar from '../../components/Sidebar';
-
+import Loading from '../../components/Loading/Loading';
+import { UserContext } from '../../services/userContext';
+import { fetchCurrentUser } from '../../api';
 
 import styled from 'styled-components';
 import { Background, Wrapper } from '../../styles/styledComponents';
-// import { AppContext } from 'services/appContext';
-// import Loading from 'components/Loading/Loading';
+
+
 
 
 const Flex = styled.div`
@@ -72,11 +74,26 @@ const FeedContainer = styled.div`
 `;
 
 const FeedPage = ({ children }) => {
-  
+  const [loading, setLoading] = useState(false);
+  const { setCurrentUser } = useContext(UserContext);
 
-  // if (loading) {
-  //   return <Loading/>
-  // }
+  useEffect(() => {
+    const setCurrentUserAsync = async () => {
+      setLoading(true);
+      try {
+        const user = await fetchCurrentUser();
+        setCurrentUser(user)
+      } catch (error) {
+        console.error("Failed to fetch current user", error);
+      }
+      setLoading(false)
+    }
+    setCurrentUserAsync()
+  }, [setCurrentUser]);
+
+  if (loading) {
+    return <Loading/>
+  }
   
   return (
     <Background>
