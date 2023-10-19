@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../services/userContext';
 import { fetchHomeTweets } from '../api/tweets';
+import Compose from './Compose';
 
 
 const HomeContent = () => {
@@ -27,9 +28,7 @@ const HomeContent = () => {
     }
   return (
     <>
-      <p>Home Feed</p>
-        {/* <Compose action='tweet' />
-        {currentUser && <TweetFetcher fetchDataFunction={() => fetchSubscribedTweets(currentUser?.following)} showType='subscribedTweets' />} */}
+      <Compose />
     </>
   )
 }
