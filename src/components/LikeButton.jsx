@@ -21,13 +21,13 @@ const LikeButton = ({ tweet }) => {
               // If successful, update UI and state
               const updatedLikes = currentUser.likes.filter(id => id !== tweet._id);
               updateUser({ ...currentUser, likes: updatedLikes });
-              setLikes(updatedLikes.length);
+              setLikes(likes - 1);
           } else {
               await interactWithTweet(tweet._id, 'like');
               // If successful, update UI and state
               const updatedLikes = [...currentUser.likes, tweet._id];
               updateUser({ ...currentUser, likes: updatedLikes });
-              setLikes(updatedLikes.length);
+              setLikes(likes + 1);
           }
       } catch (error) {
           console.error("Error interacting with tweet:", error);
