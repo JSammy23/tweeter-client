@@ -103,6 +103,7 @@ export const TweetBody = styled.div`
  color: #fff;
  font-size: 1.3em;
  margin-top: .3em;
+ white-space: pre-line;
 
  ${props => props.isMini && `
   font-size: 1.2em;
