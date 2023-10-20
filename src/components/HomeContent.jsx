@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../services/userContext';
 import { fetchHomeTweets } from '../api/tweets';
 import Compose from './Compose';
+import Tweet from './Tweet';
 
 
 const HomeContent = () => {
@@ -23,12 +24,21 @@ const HomeContent = () => {
       fetchSubscribedTweets()
     }, []);
 
+    const mapTweetsToComponents = () => {
+      if (!tweets.length) {
+          return;
+      } else {
+          return tweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />);
+      }
+  };
+
     if (loading) {
       return <p>Loading...</p>
     }
   return (
     <>
       <Compose />
+      {mapTweetsToComponents()}
     </>
   )
 }
