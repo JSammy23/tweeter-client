@@ -5,9 +5,14 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
+    const updateUser = (updatedUser) => {
+        setCurrentUser(updatedUser);
+    };
+
     const contextValue = {
         currentUser,
-        setCurrentUser
+        setCurrentUser,
+        updateUser
     }
 
     return (
