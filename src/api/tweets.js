@@ -46,3 +46,26 @@ export const composeTweet = async (body) => {
     console.log(data);
     return data;
 };
+
+/****** Interact with Tweet ******/
+export const interactWithTweet = async (tweetId, action) => {
+    const token = localStorage.getItem('token');
+    const body = { action: action };
+    const response = await fetch(`${BASE_URL}/${tweetId}/interact`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        },
+        body: JSON.stringify(body),
+    })
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+}
