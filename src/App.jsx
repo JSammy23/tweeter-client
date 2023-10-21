@@ -5,6 +5,7 @@ import SignUpPage from "./pages/SignUp/SignUpPage";
 import PrivateRoute from "./components/PrivateRoute";
 import FeedPage from "./pages/Feed/FeedPage";
 import HomeContent from "./components/HomeContent";
+import Thread from "./components/Thread";
 
 function App() {
   
@@ -19,6 +20,7 @@ function App() {
           <FeedPage>
             <Routes>
               <Route path="/home" element={<HomeContent />} />
+              <Route path="/thread/:threadId" element={<Thread />} />
             </Routes>
           </FeedPage>
         </PrivateRoute> } >
