@@ -105,6 +105,22 @@ export const TweetBody = styled.div`
  margin-top: .3em;
  white-space: pre-line;
 
+ .mention {
+    color: lime;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .hashtag {
+    color: lime;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
  ${props => props.isMini && `
   font-size: 1.2em;
  `}
