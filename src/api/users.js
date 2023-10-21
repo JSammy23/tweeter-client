@@ -55,6 +55,7 @@ export const fetchUser = async (userId) => {
     return user;
 }
 
+// Fetch current user
 export const fetchCurrentUser = async () => {
     const token = localStorage.getItem('token');
     const response = await fetch(BASE_URL, {
