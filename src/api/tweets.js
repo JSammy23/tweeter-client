@@ -19,8 +19,28 @@ export const fetchHomeTweets = async () => {
     }
 
     const tweets = await response.json();
-    console.log(tweets);
+    console.log(tweets); // Remove before production
     return tweets;
+};
+
+// Fetch single Tweet with replies
+export const fetchTweetAndReplies = async (tweetId) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${BASE_URL}/thread/${tweetId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        }
+    })
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const tweet = await response.json();
+    console.log(tweet); // Remove before production
+    return tweet;
 };
 
 /******** Create Tweets ********/
