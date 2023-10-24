@@ -3,7 +3,7 @@ import { fetchUser } from '../api/users';
 
 const useUserInfo = ({ userUid }) => {
     const [userInfo, setUserInfo] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -12,14 +12,14 @@ const useUserInfo = ({ userUid }) => {
             } catch (error) {
                 console.error("Error fetching user:", error);
             } finally {
-                setIsLoading(false);
+                setLoading(false);
             }
         }
         if (userUid) {
             fetchUserInfo();
         }
     }, [userUid]);
-    return { userInfo, isLoading };
+    return { userInfo, loading };
 };
 
 export default useUserInfo;
