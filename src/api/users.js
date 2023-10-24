@@ -41,10 +41,12 @@ export const loginUser = async (credentials) => {
 
 // Fetch User
 export const fetchUser = async (userId) => {
+    const token = localStorage.getItem('token');
     const response = await fetch(`${BASE_URL}/${userId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `${token}`
         }
     })
     if (!response.ok) {
@@ -53,7 +55,7 @@ export const fetchUser = async (userId) => {
     }
     const user = await response.json();
     return user;
-}
+};
 
 // Fetch current user
 export const fetchCurrentUser = async () => {
