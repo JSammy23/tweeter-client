@@ -40,19 +40,22 @@ export const loginUser = async (credentials) => {
 };
 
 // Fetch User
-export const fetchUser = async (userId) => {
+export const fetchUser = async (userId, fields = '') => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${BASE_URL}/${userId}`, {
+    const query = fields ? `?fields=${fields}` : '';
+    const response = await fetch(`${BASE_URL}/${userId}${query}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `${token}`
+            "Authorization": `Bearer ${token}`
         }
-    })
+    });
+
     if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message);
     }
+
     const user = await response.json();
     return user;
 };
