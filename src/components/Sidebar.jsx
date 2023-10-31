@@ -5,7 +5,7 @@ import { Logo } from '../styles/styledComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter } from '@fortawesome/fontawesome-free-brands';
 import { faHome, faHashtag, faUser } from '@fortawesome/fontawesome-free-solid';
-// import { AppContext } from 'services/appContext';
+import { UserContext } from '../services/userContext';
 import LogoutButton from './LogoutButton';
 
 
@@ -104,12 +104,12 @@ const UserControls = styled.div`
 
 const Sidebar = () => {
 
-    // const { currentUser } = useContext(AppContext);
+    const { currentUser } = useContext(UserContext);
 
     const navItems = [
         {id: 'home', icon: faHome, text: 'Home', route: '/home'},
         {id: 'explore', icon: faHashtag, text: 'Explore', route: '/explore'},
-        {id: 'profile', icon: faUser, text: 'Profile', route: `/profile/`},
+        {id: 'profile', icon: faUser, text: 'Profile', route: `/profile/${currentUser._id}`},
     ];
 
   return (
