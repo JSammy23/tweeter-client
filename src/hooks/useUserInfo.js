@@ -9,6 +9,7 @@ const useUserInfo = ({ userUid }) => {
         const fetchUserInfo = async () => {
             try {
                 const user = await fetchUser(userUid);
+                setUserInfo(user);
             } catch (error) {
                 console.error("Error fetching user:", error);
             } finally {
