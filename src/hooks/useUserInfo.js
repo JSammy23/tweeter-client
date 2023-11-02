@@ -9,10 +9,10 @@ const useUserInfo = ({ userId }) => {
         const fetchUserInfo = async () => {
             setLoading(true);
             try {
-                console.log('Fecth useeffect triggered!', userId)
-                const user = await fetchUser('651f01f5b19a1a185d03ee08');
+                // console.log('Fecth useeffect triggered!', userId)
+                const user = await fetchUser(userId);
                 setUserInfo(user);
-                console.log('User found:', user);
+                // console.log('User found:', user);
             } catch (error) {
                 console.error("Error fetching user:", error);
             } finally {
