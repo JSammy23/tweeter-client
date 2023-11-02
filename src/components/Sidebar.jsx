@@ -109,8 +109,8 @@ const Sidebar = () => {
     const navItems = [
         {id: 'home', icon: faHome, text: 'Home', route: '/home'},
         {id: 'explore', icon: faHashtag, text: 'Explore', route: '/explore'},
-        {id: 'profile', icon: faUser, text: 'Profile', route: `/profile/${currentUser._id}`},
-    ];
+        currentUser && {id: 'profile', icon: faUser, text: 'Profile', route: `/profile/${currentUser._id}`},
+    ].filter(Boolean);
 
   return (
     <Header>
