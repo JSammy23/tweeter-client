@@ -21,7 +21,7 @@ const StandardTweet = ({ tweet, isMini }) => {
     const navigate = useNavigate();
 
     const handleUserProfileClick = () => {
-      navigate(`/user/${tweet.author._id}`);
+      navigate(`/profile/${tweet.author._id}`);
     };
 
     const toggleTweetMenu = () => {
