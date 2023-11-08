@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-// import EditProfile from './Edit Profile/EditProfile';
+import EditProfile from './Edit Profile/EditProfile';
 import FollowButton from './FollowButton';
 // import UserProfileControls from './UserProfileControls';
 // import FollowList from './FollowList';
@@ -64,7 +64,8 @@ const UserProfile = ({ user }) => {
     const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
     const [localUsername, setLocalUsername] = useState('');
-    const [localName, setLocalName] = useState('');
+    const [localFirstName, setLocalFirstName] = useState('');
+    const [localLastName, setLocalLastName] = useState('');
     const [userProfileImg, setUserProfileImg] = useState('');
     const { currentUser } = useContext(UserContext);
 
@@ -77,8 +78,11 @@ const UserProfile = ({ user }) => {
         if (localUsername !== user?.username) {
             setLocalUsername(user?.username);
         }
-        if (localName !== user?.fullName) {
-            setLocalName(user?.fullName);
+        if (localFirstName !== user?.firstName) {
+            setLocalFirstName(user?.firstName);
+        }
+        if (localLastName !== user?.lastName) {
+            setLocalLastName(user?.lastName);
         }
         if (userProfileImg !== user?.profile.profile_picture) {
             setUserProfileImg(user?.profile.profile_picture);
@@ -126,7 +130,7 @@ const UserProfile = ({ user }) => {
                 </div>
             </div>
             <div className="flex column">
-                <Title>{localName}</Title> {/* Change to user first or full name */}
+                <Title>{localFirstName} {localLastName}</Title> {/* Change to user first or full name */}
                 <UserHandle>{localUsername}</UserHandle>
                 <CountsDiv>
                     <StyledLink to={`/profile/${user._id}/following`} >
@@ -138,13 +142,17 @@ const UserProfile = ({ user }) => {
                 </CountsDiv>
                 {/* <UserProfileControls userUid={user._id} /> */}
             </div>
-            {/* {editProfile && (
+            {editProfile && (
             <EditProfile onUpdateUser={handleUpdateUser} 
             toggleClose={toggleEditProfile}
             user={user}
             setLocalUsername={setLocalUsername}
             localUsername={localUsername}
-            updateUserProfileImg={setUserProfileImg} />)} */}
+            localFirstName={localFirstName}
+            setLocalFirstName={setLocalFirstName}
+            localLastName={localLastName}
+            setLocalLastName={setLocalLastName}
+            updateUserProfileImg={setUserProfileImg} />)}
         </ProfileCard>
         {/* <TweetFetcher fetchDataFunction={() => fetchUserTweetsAndLikes(userInfo.uid)} showLikes={showLikes} showType='userTweets' /> */}
     </>
