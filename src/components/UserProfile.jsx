@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import EditProfile from './Edit Profile/EditProfile';
+// import EditProfile from './Edit Profile/EditProfile';
 import FollowButton from './FollowButton';
-import UserProfileControls from './UserProfileControls';
-import FollowList from './FollowList';
+// import UserProfileControls from './UserProfileControls';
+// import FollowList from './FollowList';
 import { UserContext } from '../services/userContext';
 
 import styled from 'styled-components';
-import { Title, UserHandle, Button } from 'styles/styledComponents';
+import { Title, UserHandle, Button } from '../styles/styledComponents';
 import { Link, useRoutes } from 'react-router-dom';
 
 
@@ -64,20 +64,24 @@ const UserProfile = ({ user }) => {
     const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
     const [localUsername, setLocalUsername] = useState('');
+    const [localName, setLocalName] = useState('');
     const [userProfileImg, setUserProfileImg] = useState('');
     const { currentUser } = useContext(UserContext);
 
     useEffect(() => {
-        if (currentUser._id === user._id) {
+        if (currentUser?._id === user?._id) {
             setIsCurrentUser(true);
         } else {
             setIsCurrentUser(false);
         }
-        if (localUsername !== user.displayName) {
-            setLocalUsername(user.displayName);
+        if (localUsername !== user?.username) {
+            setLocalUsername(user?.username);
         }
-        if (userProfileImg !== user.profileImg) {
-            setUserProfileImg(user.profileImg);
+        if (localName !== user?.fullName) {
+            setLocalName(user?.fullName);
+        }
+        if (userProfileImg !== user?.profile.profile_picture) {
+            setUserProfileImg(user?.profile.profile_picture);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user, currentUser]);
@@ -102,6 +106,10 @@ const UserProfile = ({ user }) => {
         setEditProfile(false);
     };
 
+    if (!user) {
+        return null;
+    }
+
   return (
     <>
         <ProfileCard>
@@ -118,7 +126,7 @@ const UserProfile = ({ user }) => {
                 </div>
             </div>
             <div className="flex column">
-                <Title>{localUsername}</Title> {/* Change to user first or full name */}
+                <Title>{localName}</Title> {/* Change to user first or full name */}
                 <UserHandle>{localUsername}</UserHandle>
                 <CountsDiv>
                     <StyledLink to={`/profile/${user._id}/following`} >
@@ -128,15 +136,15 @@ const UserProfile = ({ user }) => {
                         <span>{user?.followers.length}</span>Followers
                     </StyledLink>
                 </CountsDiv>
-                <UserProfileControls userUid={user._id} />
+                {/* <UserProfileControls userUid={user._id} /> */}
             </div>
-            {editProfile && (
+            {/* {editProfile && (
             <EditProfile onUpdateUser={handleUpdateUser} 
             toggleClose={toggleEditProfile}
             user={user}
             setLocalUsername={setLocalUsername}
             localUsername={localUsername}
-            updateUserProfileImg={setUserProfileImg} />)}
+            updateUserProfileImg={setUserProfileImg} />)} */}
         </ProfileCard>
         {/* <TweetFetcher fetchDataFunction={() => fetchUserTweetsAndLikes(userInfo.uid)} showLikes={showLikes} showType='userTweets' /> */}
     </>
