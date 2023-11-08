@@ -79,3 +79,23 @@ export const fetchCurrentUser = async () => {
     const currentUser = await response.json();
     return currentUser;
 };
+
+// Follow/Unfollow User
+export const followUser = async (userId) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${BASE_URL}/${userId}/follow`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        }
+    })
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const data = response.json();
+    return data;
+};
