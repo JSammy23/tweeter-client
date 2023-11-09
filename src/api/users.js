@@ -61,10 +61,14 @@ export const loginUser = async (credentials) => {
 };
 
 // Fetch User
-export const fetchUser = async (userId, fields = '') => {
+export const fetchUser = async (userId, fields = '', populate = '') => {
     const token = localStorage.getItem('token');
-    const query = fields ? `?fields=${fields}` : '';
-    const response = await fetch(`${BASE_URL}/${userId}${query}`, {
+    let queryString = new URLSearchParams();
+    
+    if (fields) queryString.set('fields', fields);
+    if (populate) queryString.set('populate', populate);
+
+    const response = await fetch(`${BASE_URL}/${userId}?${queryString.toString()}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
