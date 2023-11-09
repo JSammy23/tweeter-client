@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import EditProfile from './Edit Profile/EditProfile';
 import FollowButton from './FollowButton';
+import { updateUser } from '../api';
 // import UserProfileControls from './UserProfileControls';
 // import FollowList from './FollowList';
 import { UserContext } from '../services/userContext';
@@ -107,6 +108,7 @@ const UserProfile = ({ user }) => {
     
     const handleUpdateUser = async (updatedUser) => {
         // Update user in DB
+        await updateUser(currentUser._id, updatedUser)
         setEditProfile(false);
     };
 
