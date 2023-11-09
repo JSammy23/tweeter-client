@@ -97,10 +97,10 @@ const StandardTweet = ({ tweet, isMini }) => {
           {/* {tweet.retweets > 0 && activeFilter === 'home' && <RetweetList tweet={tweet} />} */}
           <TweetCard isMini={isMini} >
           {isMini && <LeftThreadLine />}
-            {/* <UserImage 
-                src={author?.profileImg}  
-                onClick={() => handleUserProfileClick(tweet.author)}
-                isMini={isMini} /> */}
+            <UserImage 
+                src={tweet.author.profile.profile_picture}  
+                onClick={handleUserProfileClick}
+                isMini={isMini} />
             <div className="flex column">
                 <TweetHeader>
                     <FlexDiv>
