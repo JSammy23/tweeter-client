@@ -19,6 +19,27 @@ export const createUser = async (credentials) => {
     return data;
 };
 
+// Update User
+export const updateUser = async (userId, credentials) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${BASE_URL}/${userId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        },
+        body: JSON.stringify(credentials),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const data = await response.json();
+    return data;
+};
+
 // Login
 export const loginUser = async (credentials) => {
     const response = await fetch(`${BASE_URL}/login`, {
