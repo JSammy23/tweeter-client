@@ -1,9 +1,20 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { composeTweet } from '../api/tweets';
+import { UserContext } from '../services/userContext';
 
-import { TweetCard } from '../styles/tweetStyles';
+import { TweetCard, UserImage } from '../styles/tweetStyles';
 import { Button } from '../styles/styledComponents';
 import styled from 'styled-components';
-import { composeTweet } from '../api/tweets';
+
+
+/*****  Styling  *****/
+const ImgDiv = styled.div`
+ width: auto;
+ height: 100%;
+ margin-right: .5em;
+ display: flex;
+ align-items: flex-start;
+`;
 
 const StyledTextArea = styled.textarea`
     width: 100%;
@@ -33,8 +44,10 @@ const Controls = styled.div`
     justify-content: flex-end;
 `
 
+/****** Component ******/
 const Compose = () => {
     const [editorState, setEditorState] = useState('');
+    const { currentUser } = useContext(UserContext);
 
     const handleInputChange = (e) => {
         setEditorState(e.target.value);
@@ -56,7 +69,9 @@ const Compose = () => {
 
   return (
     <TweetCard>
-        {/* User profile pic */}
+        <ImgDiv>
+            <UserImage src={currentUser.profile.profile_picture} />
+        </ImgDiv>
         <ComposeBody>
             <StyledTextArea
             maxLength='500'
@@ -65,7 +80,11 @@ const Compose = () => {
             value={editorState}
             onChange={handleInputChange} />
             <Controls>
-                <Button onClick={handleComposeTweet}>Tweet</Button>
+                <Button 
+                    onClick={handleComposeTweet}
+                    disabled={editorState.trim().length < 2}>
+                        Tweet
+                </Button>
             </Controls>
         </ComposeBody>
         

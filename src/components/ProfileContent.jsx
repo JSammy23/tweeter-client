@@ -1,5 +1,4 @@
 import { Routes, Route, useParams } from "react-router-dom";
-import { useEffect } from "react";
 import UserProfile from "./UserProfile";
 import FollowList from "./FollowList";
 import useUserInfo from "../hooks/useUserInfo";
@@ -9,16 +8,12 @@ const ProfileContent = () => {
     const { userId } = useParams();
     const { userInfo, loading } = useUserInfo({
       userId: userId,
-      populate: 'following:firstName lastName username profile.profile_picture,followers:firstName lastName username profile.profile_picture'
+      populate: 'following:firstName lastName username profile.profile_picture,followers:firstName lastName username profile'
     });
-    // console.log("UserID from useParams:", userId);
     
-
     if (loading) {
         return <Loading />;
     }
-
-
 
   return (
     <Routes>

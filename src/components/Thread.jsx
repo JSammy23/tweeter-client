@@ -28,7 +28,7 @@ const StyledIcon = styled(FontAwesomeIcon)`
 const Thread = () => {
   const { currentUser } = useContext(UserContext);
   const { threadId } = useParams();
-  const [isLoading, setIsLoadibng] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeThread, setActiveThread] = useState('');
 
   const navigate = useNavigate();
@@ -36,13 +36,13 @@ const Thread = () => {
   useEffect(() => {
     const fetchThread = async () => {
       try {
-        setIsLoadibng(true);
+        setIsLoading(true);
         const tweet = await fetchTweetAndReplies(threadId);
         setActiveThread(tweet);
       } catch (error) {
         console.error("Error fetching thread:", error);
       } finally {
-        setIsLoadibng(false);
+        setIsLoading(false);
       }
     }
     fetchThread()
