@@ -3,6 +3,7 @@ import Tweet from './Tweet';
 import StandardTweet from './StandardTweet';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from '../services/userContext';
+import Compose from './Compose';
 
 import styled from 'styled-components';
 import { Header } from '../styles/styledComponents';
@@ -51,7 +52,7 @@ const Thread = () => {
   
 
   const mapRepliesToTweetComponents = () => {
-    return activeThread.replies.map((reply) => (
+    return activeThread?.replies?.map((reply) => (
       // This will be the only place we bypass the tweet comp for a standard tweet for replies
       <StandardTweet 
         key={reply._id} 
@@ -59,10 +60,12 @@ const Thread = () => {
     ));
   };
 
-  // const handleAddReply = (newReply) => {
-  //   setReplies((prevReplies) => [newReply, ...prevReplies]);
-  //   setLocalReplyCount((prevLocalReplyCount) => prevLocalReplyCount + 1);
-  // };
+  const handleAddReply = (newReply) => {
+    setActiveThread((prevActiveThread) => ({
+      ...prevActiveThread,
+      replies: [newReply, ...prevActiveThread.replies]
+    }));
+  };
 
   const handleBackClick = () => {
     navigate(-1);
@@ -77,13 +80,12 @@ const Thread = () => {
         <Tweet 
          key={activeThread._id} 
          tweet={activeThread} />
-        {/* <Compose 
-         user={currentUser}
+        <Compose 
          action='reply'
          isReply
          activeThread={activeThread}
-         addReply={handleAddReply} /> */}
-        {/* {mapRepliesToTweetComponents()} */}
+         addReply={handleAddReply} />
+        {mapRepliesToTweetComponents()}
     </>
   )
 }

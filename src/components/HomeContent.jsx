@@ -37,7 +37,7 @@ const HomeContent = () => {
     }
   return (
     <>
-      <Compose />
+      <Compose action='tweet' />
       {mapTweetsToComponents()}
     </>
   )

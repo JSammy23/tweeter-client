@@ -45,9 +45,10 @@ const Controls = styled.div`
 `
 
 /****** Component ******/
-const Compose = () => {
+const Compose = ({ action, isReply, activeThread, addReply }) => {
     const [editorState, setEditorState] = useState('');
     const { currentUser } = useContext(UserContext);
+    const placeholder = action === 'tweet' ? "What's Happening?" : "Tweet your reply!";
 
     const handleInputChange = (e) => {
         setEditorState(e.target.value);
@@ -66,22 +67,37 @@ const Compose = () => {
         }
     };
 
+    const handleComposeReply = async () => {
+        const body = {
+            text: editorState,
+            replyTo: activeThread._id,
+        }
+        try {
+            const newReply = await composeTweet(body);
+            console.log('reply composed sucessfully!');
+            setEditorState('')
+            addReply(newReply);
+        } catch (error) {
+            console.error('Error composing reply:', error);
+        }
+    };
+
 
   return (
     <TweetCard>
         <ImgDiv>
-            <UserImage src={currentUser.profile.profile_picture} />
+            <UserImage src={currentUser?.profile.profile_picture} />
         </ImgDiv>
         <ComposeBody>
             <StyledTextArea
             maxLength='500'
-            placeholder="What's Happening?"
+            placeholder={placeholder}
             rows="5"
             value={editorState}
             onChange={handleInputChange} />
             <Controls>
                 <Button 
-                    onClick={handleComposeTweet}
+                    onClick={isReply ? handleComposeReply : handleComposeTweet}
                     disabled={editorState.trim().length < 2}>
                         Tweet
                 </Button>
