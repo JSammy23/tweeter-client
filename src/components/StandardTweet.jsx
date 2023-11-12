@@ -105,7 +105,7 @@ const StandardTweet = ({ tweet, isMini }) => {
                 <TweetHeader>
                     <FlexDiv>
                         <div className="flex align">
-                            <Name isMini={isMini} >{tweet.author.firstName}</Name>
+                            <Name isMini={isMini} >{tweet.author.fullName}</Name>
                             <Handle isMini={isMini} onClick={handleUserProfileClick} >{tweet.author.username}</Handle>
                         </div>
                         <TweetDate isMini={isMini} >{formattedDate}</TweetDate>

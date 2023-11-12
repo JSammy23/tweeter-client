@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { createUser } from '../../api';
+import { createUser, loginUser } from '../../api';
 import Loading from '../../components/Loading/Loading';
 
 
@@ -48,6 +48,12 @@ const SignUpPage = () => {
 
             const newUser = await createUser(credentials);
             // Navigate to succees screen, timed till login.
+            const loginCreds = {
+                username: credentials.username,
+                password: credentials.password
+            }
+            await loginUser(loginCreds);
+            navigate('/home');
         } catch (error) {
             console.error('Failed to create user:', error);
             setError(error.message);
