@@ -3,7 +3,10 @@ import { UserContext } from '../services/userContext';
 import { fetchHomeTweets } from '../api/tweets';
 import Compose from './Compose';
 import Tweet from './Tweet';
+import TweeterBird from '../assets/TweetBird.png';
 
+import styled from 'styled-components';
+import { EmptyFeed } from '../styles/styledComponents';
 
 const HomeContent = () => {
     const { currentUser } = useContext(UserContext);
@@ -26,11 +29,16 @@ const HomeContent = () => {
 
     const mapTweetsToComponents = () => {
       if (!tweets.length) {
-          return;
+          return (
+            <EmptyFeed className="empty-feed">
+              <h2>No tweets to display. Start following people to see their tweets!</h2>
+              <img src={TweeterBird} alt="Empty Feed" width='175px' />
+            </EmptyFeed>
+          );
       } else {
           return tweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />);
       }
-  };
+    };
 
     if (loading) {
       return <p>Loading...</p>

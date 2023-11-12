@@ -41,7 +41,7 @@ margin-left: auto;
 export const Title = styled.h2`
  color: ${props => props.theme.colors.primary};
  font-weight: bold;
- margin-left: .7em;
+ margin-left: .6em;
 `;
 
 export const UserHandle = styled.h3`
@@ -85,5 +85,13 @@ export const Module = styled.div`
  @media (max-width: 400px) {
     padding: 1.3em;
  }
+`;
+
+export const EmptyFeed = styled.div`
+ color: lime;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 2em;
 `;
 
