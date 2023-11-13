@@ -124,3 +124,24 @@ export const followUser = async (userId) => {
     const data = response.json();
     return data;
 };
+
+// Check for username availability
+export const checkUsernameAvailability = async (username) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${BASE_URL}/check-username/${username}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}` 
+        }
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const data = await response.json();
+    console.log('Check Username returned:', data);
+    return data.available; 
+};

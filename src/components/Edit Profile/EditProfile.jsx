@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { checkUsernameAvailability } from '../../api';
 
 import styled from 'styled-components';
 import { Button, Module } from '../../styles/styledComponents';
@@ -38,42 +39,44 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
     const [error, setError] = useState('');
     
 
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
         
-    //     // if (user.username !== localUsername) {
-    //     //     // Create function to check username avalibilty
-    //     //     const handleAvailable = await checkUserHandleAvailability(localHandle);
-    //     //     if (!handleAvailable) {
-    //     //         setError('User handle is already taken!');
-    //     //         return;
-    //     //     }
-    //     // }
+        if (user.username !== localUsername) {
+            // Create function to check username avalibilty
+            const usernameAvailable = await checkUsernameAvailability(localUsername);
+            if (!usernameAvailable) {
+                setError('User handle is already taken!');
+                return;
+            }
+        }
     
-    //     // Update user api call
-    //     const updatedUser = {
-    //       ...user,
-    //       username: localusername,
-    //       firs: localHandle,
-    //       profileImg,
-    //     };
+        // Update user api call
+        const updatedUser = {
+          username: localUsername,
+          firstName: localFirstName,
+          lastName: localLastName,
+        //   profile: {
+        //     profile_picture: profileImg
+        //   }
+        };
     
-    //     onUpdateUser(updatedUser);
-    //     updateUserProfileImg(profileImg);
+        onUpdateUser(updatedUser);
+        // updateUserProfileImg(profileImg);
 
-    //     // Deteremine how/if to cache user
-    //     const cachedUser = localStorage.getItem(user.uid);
-    //     if (cachedUser) {
-    //         const parsedUser = JSON.parse(cachedUser);
-    //         parsedUser.displayName = localDisplayName;
-    //         parsedUser.userHandle = localHandle;
-    //         parsedUser.profileImg = profileImg;
-    //         localStorage.setItem(user.uid, JSON.stringify(parsedUser)); 
-    //     } else {
-    //         localStorage.setItem(user.uid, JSON.stringify(updatedUser));
-    //     };
-    // };
+        // Deteremine how/if to cache user
+        // const cachedUser = localStorage.getItem(user.uid);
+        // if (cachedUser) {
+        //     const parsedUser = JSON.parse(cachedUser);
+        //     parsedUser.displayName = localDisplayName;
+        //     parsedUser.userHandle = localHandle;
+        //     parsedUser.profileImg = profileImg;
+        //     localStorage.setItem(user.uid, JSON.stringify(parsedUser)); 
+        // } else {
+        //     localStorage.setItem(user.uid, JSON.stringify(updatedUser));
+        // };
+    };
 
     const handleInputChange = (e) => {
         if (e.target.value !== '') {
@@ -115,7 +118,7 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
             </div>
             <Button form='editProfile' type='submit' fontSize='.6em' >Save</Button>
         </Header>
-        <form id='editProfile'  > {/* Add back <= onSubmit={handleSubmit} */}
+        <form id='editProfile' onSubmit={handleSubmit} > {/* Add back <=  */}
             <div className="profile-img-cont">
                 <img onClick={openFileInput} className='profile-pic' src={profileImg} alt='profile pic' />
                 <div onClick={openFileInput} className="edit-label">Edit</div>
