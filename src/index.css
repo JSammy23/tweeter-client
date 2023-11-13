@@ -43,3 +43,8 @@ body {
 .center {
   justify-content: center;
 }
+
+.error {
+  color: red;
+  margin-top: 1em;
+}
