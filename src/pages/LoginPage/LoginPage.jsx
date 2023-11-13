@@ -28,7 +28,7 @@ const LoginPage = () => {
             await loginUser(credentials);
             navigate('/home');
         } catch (error) {
-            console.error('Failed to create user:', error);
+            console.error('Failed to login user:', error);
             setError(error.message);
         }
     };
