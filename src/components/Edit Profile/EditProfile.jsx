@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { checkUsernameAvailability } from '../../api';
+import { checkUsernameAvailability, uploadProfilePicture } from '../../api';
 
 import styled from 'styled-components';
 import { Button, Module } from '../../styles/styledComponents';
@@ -35,14 +35,13 @@ const IconBtn = styled.button`
 
 const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, setLocalUsername, localUsername, setLocalFirstName, setLocalLastName, localFirstName, localLastName }) => {
 
-    const [profileImg, setProfileImg] = useState(user.profile.profile_picture);
+    const [profileImgURL, setProfileImgURL] = useState(user.profile.profile_picture);
     const [error, setError] = useState('');
     
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        
         if (user.username !== localUsername) {
             // Create function to check username avalibilty
             const usernameAvailable = await checkUsernameAvailability(localUsername);
@@ -58,24 +57,12 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
           firstName: localFirstName,
           lastName: localLastName,
         //   profile: {
-        //     profile_picture: profileImg
+        //     profile_picture: profileImgURL
         //   }
         };
     
         onUpdateUser(updatedUser);
-        // updateUserProfileImg(profileImg);
-
-        // Deteremine how/if to cache user
-        // const cachedUser = localStorage.getItem(user.uid);
-        // if (cachedUser) {
-        //     const parsedUser = JSON.parse(cachedUser);
-        //     parsedUser.displayName = localDisplayName;
-        //     parsedUser.userHandle = localHandle;
-        //     parsedUser.profileImg = profileImg;
-        //     localStorage.setItem(user.uid, JSON.stringify(parsedUser)); 
-        // } else {
-        //     localStorage.setItem(user.uid, JSON.stringify(updatedUser));
-        // };
+        // updateUserProfileImg(profileImgURL);
     };
 
     const handleInputChange = (e) => {
@@ -86,20 +73,16 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
         }
     };
 
-    // const handleProfileImgChange = async (e) => {
-    //     const file = e.target.files[0];
+    const handleProfileImgChange = async (e) => {
+        const file = e.target.files[0];
       
-    //     const storageRef = ref(storage, `users/${user.uid}/profile-img/${file.name}`);
-      
-    //     try {
-    //       const snapshot = await uploadBytes(storageRef, file);
-    //       const downloadURL = await getDownloadURL(snapshot.ref);
-    //       console.log('Profile image uploaded successfully:', downloadURL);
-    //       setProfileImg(downloadURL);
-    //     } catch (error) {
-    //       console.error('Error uploading profile image:', error);
-    //     };
-    // };
+        try {
+          const uploadedImg = await uploadProfilePicture(file);
+          setProfileImgURL(uploadedImg.fileUrl);
+        } catch (error) {
+          console.error('Error uploading profile image:', error);
+        }
+    };
 
     const openFileInput = () => {
         const fileInput = document.getElementById('profileImgInput');
@@ -120,13 +103,13 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
         </Header>
         <form id='editProfile' onSubmit={handleSubmit} > {/* Add back <=  */}
             <div className="profile-img-cont">
-                <img onClick={openFileInput} className='profile-pic' src={profileImg} alt='profile pic' />
+                <img onClick={openFileInput} className='profile-pic' src={profileImgURL} alt='profile pic' />
                 <div onClick={openFileInput} className="edit-label">Edit</div>
                 <input 
                 type="file"
                 id='profileImgInput'
                 accept='image/*'
-                //onChange={handleProfileImgChange}
+                onChange={handleProfileImgChange}
                 style={{ display: 'none' }}
                  />
             </div>

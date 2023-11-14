@@ -145,3 +145,25 @@ export const checkUsernameAvailability = async (username) => {
     console.log('Check Username returned:', data);
     return data.available; 
 };
+
+// Upload profile picture
+export const uploadProfilePicture = async (file) => {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+    const response = await fetch(`${BASE_URL}/upload-profile-picture`, {
+        method: "POST",
+        headers: {
+            "Authorization": `${token}`
+        },
+        body: formData
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const data = await response.json();
+    return data;
+};
