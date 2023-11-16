@@ -147,11 +147,15 @@ export const checkUsernameAvailability = async (username) => {
 };
 
 // Upload profile picture
-export const uploadProfilePicture = async (file) => {
+export const uploadProfilePicture = async (file, userId) => {
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('profilePicture', file);
-    const response = await fetch(`${BASE_URL}/upload-profile-picture`, {
+    // // Log formData contents
+    // for (let [key, value] of formData.entries()) {
+    //     console.log(key, value);
+    // }
+    const response = await fetch(`${BASE_URL}/${userId}/update-profile-picture`, {
         method: "POST",
         headers: {
             "Authorization": `${token}`

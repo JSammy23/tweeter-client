@@ -77,7 +77,7 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
         const file = e.target.files[0];
       
         try {
-          const uploadedImg = await uploadProfilePicture(file);
+          const uploadedImg = await uploadProfilePicture(file, user._id);
           setProfileImgURL(uploadedImg.fileUrl);
         } catch (error) {
           console.error('Error uploading profile image:', error);
