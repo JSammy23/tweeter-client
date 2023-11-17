@@ -2,12 +2,14 @@ import { useContext, useEffect, useState } from 'react';
 import EditProfile from './Edit Profile/EditProfile';
 import FollowButton from './FollowButton';
 import { updateUser } from '../api';
-// import UserProfileControls from './UserProfileControls';
+import UserProfileControls from './UserProfileControls';
 // import FollowList from './FollowList';
+import Tweet from './Tweet';
 import { UserContext } from '../services/userContext';
+import TweeterBird from '../assets/TweetBird.png';
 
 import styled from 'styled-components';
-import { Title, UserHandle, Button } from '../styles/styledComponents';
+import { Title, UserHandle, Button, EmptyFeed } from '../styles/styledComponents';
 import { Link, useRoutes } from 'react-router-dom';
 
 
@@ -60,7 +62,7 @@ const StyledLink = styled(Link)`
 `;
 
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ user, tweetData }) => {
 
     const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
@@ -91,25 +93,26 @@ const UserProfile = ({ user }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user, currentUser]);
 
-    // const match = useRoutes([
-    //     {
-    //         path: 'following',
-    //         element: <FollowList listType='following' following={user?.following} user={user} />
-    //     },
-    //     {
-    //         path: 'followers',
-    //         element: <FollowList listType='followers' followers={user?.followers} user={user} />
-    //     },
-    // ]);
-
     const toggleEditProfile = () => {
         setEditProfile(!editProfile);
     };
     
     const handleUpdateUser = async (updatedUser) => {
-        // Update user in DB
         await updateUser(currentUser._id, updatedUser)
         setEditProfile(false);
+    };
+
+    const mapTweetsToComponents = () => {
+        if (!tweetData.userTweets.length) {
+            return (
+              <EmptyFeed className="empty-feed">
+                <h2>No tweets to display.</h2>
+                <img src={TweeterBird} alt="Empty Feed" width='175px' />
+              </EmptyFeed>
+            );
+        } else {
+            return tweetData.userTweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />);
+        }
     };
 
     if (!user) {
@@ -132,7 +135,7 @@ const UserProfile = ({ user }) => {
                 </div>
             </div>
             <div className="flex column">
-                <Title>{localFirstName} {localLastName}</Title> {/* Change to user first or full name */}
+                <Title>{localFirstName} {localLastName}</Title>
                 <UserHandle>{localUsername}</UserHandle>
                 <CountsDiv>
                     <StyledLink to={`/profile/${user._id}/following`} >
@@ -142,7 +145,7 @@ const UserProfile = ({ user }) => {
                         <span>{user?.followers.length}</span>Followers
                     </StyledLink>
                 </CountsDiv>
-                {/* <UserProfileControls userUid={user._id} /> */}
+                <UserProfileControls userUid={user._id} />
             </div>
             {editProfile && (
             <EditProfile onUpdateUser={handleUpdateUser} 
@@ -156,6 +159,7 @@ const UserProfile = ({ user }) => {
             setLocalLastName={setLocalLastName}
             updateUserProfileImg={setUserProfileImg} />)}
         </ProfileCard>
+        {mapTweetsToComponents()}
         {/* <TweetFetcher fetchDataFunction={() => fetchUserTweetsAndLikes(userInfo.uid)} showLikes={showLikes} showType='userTweets' /> */}
     </>
   );

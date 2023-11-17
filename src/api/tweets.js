@@ -3,9 +3,30 @@ const BASE_URL = 'http://localhost:3000/tweets';
 /****** Fetch Tweets ********/
 
 // Fetch Tweets for Home content
-export const fetchHomeTweets = async () => {
+export const fetchHomeTweets = async (limit = 100, skip = 0) => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${BASE_URL}/home`, {
+    const response = await fetch(`${BASE_URL}/home?limit=${limit}&skip=${skip}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        }
+    })
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const tweets = await response.json();
+    console.log(tweets); // Remove before production
+    return tweets;
+};
+
+// Fetch User profile Tweets and Likes
+export const fetchUserTweetsAndLikes = async (userId, limit = 100, skip = 0) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${BASE_URL}/profile/${userId}?limit=${limit}&skip=${skip}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -39,7 +60,7 @@ export const fetchTweetAndReplies = async (tweetId) => {
     }
 
     const tweet = await response.json();
-    console.log(tweet); // Remove before production
+    console.log('Fetched Thread:', tweet); // Remove before production
     return tweet;
 };
 
