@@ -56,13 +56,10 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
           username: localUsername,
           firstName: localFirstName,
           lastName: localLastName,
-        //   profile: {
-        //     profile_picture: profileImgURL
-        //   }
         };
     
         onUpdateUser(updatedUser);
-        // updateUserProfileImg(profileImgURL);
+        updateUserProfileImg(profileImgURL);
     };
 
     const handleInputChange = (e) => {
