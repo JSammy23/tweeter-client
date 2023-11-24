@@ -16,7 +16,7 @@ const StandardTweet = ({ tweet, isMini }) => {
     
     const [isTweetMenuOpen, setIsTweetMenuOpen] = useState(false);
     const { currentUser } = useContext(UserContext);
-    const activeFilter = 'home';
+    const activeFilter = 'thread';
 
     const navigate = useNavigate();
 
@@ -87,7 +87,7 @@ const StandardTweet = ({ tweet, isMini }) => {
       if (typeof tweet.date === 'string') {
         date = new Date(tweet.date)
       } else {
-        date = tweet.date.toDate(); // convert Firestore Timestamp to Date object
+        date = tweet.date.toDate(); // convert timestamp to Date object
       } 
         formattedDate = format(date, "h:mm bbb MM/dd/yyy");
     }
