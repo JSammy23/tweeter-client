@@ -1,9 +1,7 @@
+import ReplyTweet from './ReplyTweet';
 import StandardTweet from './StandardTweet';
 
-
-
 import styled from 'styled-components';
-
 
 // TODO:
 // 1. Assess tweet type ie. isReply, isQoute?
@@ -15,11 +13,8 @@ const Tweet = ({ tweet }) => {
     return <StandardTweet tweet={tweet} />
   } else {
     return null;
-    // ReplyTweet
+    // <ReplyTweet initialTweet={tweet} />
   }
-
-  
-
 };
 
 export default Tweet
