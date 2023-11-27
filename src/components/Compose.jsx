@@ -71,6 +71,7 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
         const body = {
             text: editorState,
             replyTo: activeThread._id,
+            thread: activeThread.thread === null ? activeThread._id : activeThread.thread
         }
         try {
             const newReply = await composeTweet(body);
