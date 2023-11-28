@@ -52,7 +52,7 @@ const Thread = () => {
   
 
   const mapRepliesToTweetComponents = () => {
-    return activeThread.replies.map((reply) => (
+    return activeThread.replies?.map((reply) => (
       // This will be the only place we bypass the tweet comp for a standard tweet for replies
       <StandardTweet 
         key={reply._id} 

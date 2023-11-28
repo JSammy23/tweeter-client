@@ -25,6 +25,11 @@ const ReplyTweet = ({ initialTweet }) => {
                 }
             }
 
+            // Add initialTweet only if it's not already in the thread
+            if (!tweets.find(t => t._id === initialTweet._id)) {
+                tweets.push(initialTweet);
+            }
+
             setThread(tweets.reverse());
             setIsLoading(false);
         };
@@ -40,9 +45,9 @@ const ReplyTweet = ({ initialTweet }) => {
 
     return (
         <div>
-            {thread.map((tweet, index) => tweet.missing ? 
+            {thread.map((tweet, index) => tweet.missing || tweet.isDeleted ? 
                 <MissingTweet key={index} isMini /> :
-                <StandardTweet key={tweet._id || index} tweet={tweet} isMini />
+                <StandardTweet key={tweet._id || index} tweet={tweet} isMini={index !== thread.length - 1} />
             )}
             <StandardTweet tweet={initialTweet} key={initialTweet._id} />
         </div>

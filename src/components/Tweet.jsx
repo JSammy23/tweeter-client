@@ -12,8 +12,7 @@ const Tweet = ({ tweet }) => {
   if (tweet.replyTo === null) {
     return <StandardTweet tweet={tweet} />
   } else {
-    return null;
-    // <ReplyTweet initialTweet={tweet} />
+    return <ReplyTweet initialTweet={tweet} />
   }
 };
 
