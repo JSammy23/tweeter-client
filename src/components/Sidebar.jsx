@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Logo } from '../styles/styledComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter } from '@fortawesome/fontawesome-free-brands';
-import { faHome, faHashtag, faUser } from '@fortawesome/fontawesome-free-solid';
+import { faHome, faHashtag, faUser, faSearch, faBell } from '@fortawesome/fontawesome-free-solid';
 import { UserContext } from '../services/userContext';
 import LogoutButton from './LogoutButton';
 
@@ -48,7 +48,7 @@ const NavContainer = styled.div`
 const Nav = styled.nav`
   ul {
     display: flex;
-    gap: .5em;
+    gap: .7em;
     flex-direction: column;
     list-style: none;
  }
@@ -109,7 +109,10 @@ const Sidebar = () => {
     const navItems = [
         {id: 'home', icon: faHome, text: 'Home', route: '/home'},
         {id: 'explore', icon: faHashtag, text: 'Explore', route: '/explore'},
+        {id: 'search', icon: faSearch, text: 'Search', route: '/search'},
+        {id: 'notifications', icon: faBell, text: 'Notifications', route: '/notifications'},
         currentUser && {id: 'profile', icon: faUser, text: 'Profile', route: `/profile/${currentUser._id}`},
+        
     ].filter(Boolean);
 
   return (
