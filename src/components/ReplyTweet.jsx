@@ -45,7 +45,7 @@ const ReplyTweet = ({ initialTweet }) => {
 
     return (
         <div>
-            {thread.map((tweet, index) => tweet.missing || tweet.isDeleted ? 
+            {thread.map((tweet, index) => tweet.missing ? 
                 <MissingTweet key={index} isMini /> :
                 <StandardTweet key={tweet._id || index} tweet={tweet} isMini={index !== thread.length - 1} />
             )}
