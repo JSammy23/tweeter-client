@@ -1,5 +1,4 @@
 import { Routes, Route, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
 import FollowList from "./FollowList";
 import useUserInfo from "../hooks/useUserInfo";
