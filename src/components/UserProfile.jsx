@@ -3,13 +3,12 @@ import EditProfile from './Edit Profile/EditProfile';
 import FollowButton from './FollowButton';
 import { updateUser } from '../api';
 import UserProfileControls from './UserProfileControls';
-// import FollowList from './FollowList';
-import Tweet from './Tweet';
 import { UserContext } from '../services/userContext';
-import TweeterBird from '../assets/TweetBird.png';
+import TweetFetcher from './TweetFetcher';
+import { fetchUserTweetsAndLikes } from "../api/tweets";
 
 import styled from 'styled-components';
-import { Title, UserHandle, Button, EmptyFeed } from '../styles/styledComponents';
+import { Title, UserHandle, Button } from '../styles/styledComponents';
 import { Link, useRoutes } from 'react-router-dom';
 
 
@@ -62,7 +61,7 @@ const StyledLink = styled(Link)`
 `;
 
 
-const UserProfile = ({ user, tweetData }) => {
+const UserProfile = ({ user, showLikes }) => {
 
     const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
@@ -100,19 +99,6 @@ const UserProfile = ({ user, tweetData }) => {
     const handleUpdateUser = async (updatedUser) => {
         await updateUser(currentUser._id, updatedUser)
         setEditProfile(false);
-    };
-
-    const mapTweetsToComponents = () => {
-        if (!tweetData.userTweets.length) {
-            return (
-              <EmptyFeed className="empty-feed">
-                <h2>No tweets to display.</h2>
-                <img src={TweeterBird} alt="Empty Feed" width='175px' />
-              </EmptyFeed>
-            );
-        } else {
-            return tweetData.userTweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />);
-        }
     };
 
     if (!user) {
@@ -159,8 +145,7 @@ const UserProfile = ({ user, tweetData }) => {
             setLocalLastName={setLocalLastName}
             updateUserProfileImg={setUserProfileImg} />)}
         </ProfileCard>
-        {mapTweetsToComponents()}
-        {/* <TweetFetcher fetchDataFunction={() => fetchUserTweetsAndLikes(userInfo.uid)} showLikes={showLikes} showType='userTweets' /> */}
+        <TweetFetcher fetchDataFunction={() => fetchUserTweetsAndLikes(user._id)} showLikes={showLikes} showType='userTweets' />
     </>
   );
 };

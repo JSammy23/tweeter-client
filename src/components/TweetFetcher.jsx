@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Tweet from './Tweet';
+import EmptyFeed from './EmptyFeed';
 
 const TweetFetcher = ({ userUid, showLikes, fetchDataFunction, showType }) => {
 
@@ -26,8 +27,8 @@ const TweetFetcher = ({ userUid, showLikes, fetchDataFunction, showType }) => {
     }, [fetchDataFunction]); 
 
     const mapTweetsToComponents = (tweets) => {
-        if (tweets.length === 0) {
-            return;
+        if (!tweets.length) {
+            return <EmptyFeed />;
         } else {
             return tweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />);
         }
