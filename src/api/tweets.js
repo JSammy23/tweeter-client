@@ -23,6 +23,27 @@ export const fetchHomeTweets = async (limit = 100, skip = 0) => {
     return tweets;
 };
 
+// Fetch Tweets for Explore content
+export const fetchExploreTweets = async (limit = 100, skip = 0) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${BASE_URL}/explore?limit=${limit}&skip=${skip}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        }
+    })
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const tweets = await response.json();
+    console.log(tweets); // Remove before production
+    return tweets;
+};
+
 // Fetch User profile Tweets and Likes
 export const fetchUserTweetsAndLikes = async (userId, limit = 100, skip = 0) => {
     const token = localStorage.getItem('token');
