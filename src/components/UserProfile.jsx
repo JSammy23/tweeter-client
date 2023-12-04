@@ -145,7 +145,7 @@ const UserProfile = ({ user, showLikes }) => {
             setLocalLastName={setLocalLastName}
             updateUserProfileImg={setUserProfileImg} />)}
         </ProfileCard>
-        <TweetFetcher fetchDataFunction={() => fetchUserTweetsAndLikes(user._id)} showLikes={showLikes} showType='userTweets' />
+        <TweetFetcher fetchDataFunction={() => fetchUserTweetsAndLikes(user._id)} showLikes={showLikes} showType='userProfile' />
     </>
   );
 };

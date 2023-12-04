@@ -7,6 +7,7 @@ const TweetFetcher = ({ userUid, showLikes, fetchDataFunction, showType }) => {
     const [tweetData, setTweetData] = useState({
         userTweets: [],
         userLikes: [],
+        userRetweets: [],
         subscribedTweets: [],
         exploreTweets: []
     });
@@ -37,8 +38,12 @@ const TweetFetcher = ({ userUid, showLikes, fetchDataFunction, showType }) => {
     const tweetTypes = {
         userTweets: tweetData.userTweets,
         userLikes: tweetData.userLikes,
+        userRetweets: tweetData.userRetweets,
         subscribedTweets: tweetData.subscribedTweets,
         exploreTweets: tweetData.exploreTweets,
+        userProfile: tweetData.userTweets && tweetData.userRetweets
+                 ? [...tweetData.userTweets, ...tweetData.userRetweets]
+                 : []
     };
 
     const renderTweets = () => {
