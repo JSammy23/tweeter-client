@@ -7,6 +7,7 @@ import FeedPage from "./pages/Feed/FeedPage";
 import HomeContent from "./components/HomeContent";
 import Thread from "./components/Thread";
 import ProfileContent from "./components/ProfileContent";
+import ExploreContent from "./components/ExploreContent";
 
 function App() {
   
@@ -21,6 +22,7 @@ function App() {
           <FeedPage>
             <Routes>
               <Route path="/home" element={<HomeContent />} />
+              <Route path="/explore" element={<ExploreContent />} />
               <Route path="/thread/:threadId" element={<Thread />} />
               <Route path="/profile/:userId/*" element={<ProfileContent />} />
             </Routes>
