@@ -87,7 +87,7 @@ export const Module = styled.div`
  }
 `;
 
-export const EmptyFeed = styled.div`
+export const EmptyFeedContainer = styled.div`
  color: lime;
  display: flex;
  flex-direction: column;
