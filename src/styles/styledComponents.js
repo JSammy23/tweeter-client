@@ -95,3 +95,20 @@ export const EmptyFeedContainer = styled.div`
  padding: 2em;
 `;
 
+export const TextButton = styled.span`
+ color: inherit;
+ margin: 0 .3em;
+ text-decoration: underline;
+ cursor: pointer;
+
+ &:hover {
+    color: ${props => props.theme.colors.primary};
+ }
+`;
+
+export const NotificationControls = styled.div`
+ font-size: 1.2em;
+ display: flex;
+ justify-content: space-between;
+`;
+
