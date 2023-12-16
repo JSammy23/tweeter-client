@@ -4,6 +4,7 @@ import { faHeart, faRetweet, faUserPlus, faBell } from "@fortawesome/fontawesome
 import { faComment } from "@fortawesome/fontawesome-free-regular";
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
+import { updateNotificationReadStatus } from "../api";
 
 import { TweetDate } from "../styles/tweetStyles";
 
@@ -37,11 +38,13 @@ const Notification = ({ notification }) => {
   
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (notification.type === "FOLLOW") {
-      navigate(`/profile/${notification.sender._id}`)
+      navigate(`/profile/${notification.sender._id}`);
+      await updateNotificationReadStatus(notification._id);
     } else {
       navigate(`/thread/${notification.tweet}`);
+      await updateNotificationReadStatus(notification._id);
     }
   };
 
