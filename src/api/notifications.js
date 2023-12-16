@@ -45,7 +45,7 @@ export const updateNotificationReadStatus = async (notificationId) => {
 export const clearNotifications = async (onlyRead = false) => {
     const token = localStorage.getItem('token');
     const queryParams = onlyRead ? '?onlyRead=true' : '';
-    const endpoint = `${BASE_URL}/notifications/clear${queryParams}`;
+    const endpoint = `${BASE_URL}/clear${queryParams}`;
 
     const response = await fetch(endpoint, {
         method: "DELETE", 
