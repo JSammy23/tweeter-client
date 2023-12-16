@@ -9,6 +9,7 @@ import Thread from "./components/Thread";
 import ProfileContent from "./components/ProfileContent";
 import ExploreContent from "./components/ExploreContent";
 import NotificationContent from "./components/NotificationContent";
+import SearchContent from "./components/SearchContent";
 
 function App() {
   
@@ -27,6 +28,7 @@ function App() {
               <Route path="/thread/:threadId" element={<Thread />} />
               <Route path="/profile/:userId/*" element={<ProfileContent />} />
               <Route path="/notifications" element={<NotificationContent />} />
+              <Route path="/search" element={<SearchContent />} />
             </Routes>
           </FeedPage>
         </PrivateRoute> } >
