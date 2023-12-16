@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Notification from './Notification';
-import { updateNotificationReadStatus, clearNotifications } from '../api';
+import { clearNotifications } from '../api';
 
 import styled from 'styled-components';
 import { Header, Title } from '../styles/styledComponents';
@@ -46,6 +46,7 @@ const NotificationContent = () => {
             setNotifications(originalNotifications); 
         }
     };
+
 
   return (
     <>
