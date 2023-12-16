@@ -23,11 +23,28 @@ const NotificationContent = () => {
     }, []);
 
     const handleClearReadClick = async () => {
-        await clearNotifications(onlyRead);
+        const originalNotifications = [...notifications]; // Store the original state
+        const unreadNotifications = notifications.filter(notification => !notification.read);
+        setNotifications(unreadNotifications);
+    
+        try {
+            await clearNotifications(true); 
+        } catch (error) {
+            console.log('Error clearing read notifications:', error);
+            setNotifications(originalNotifications); 
+        }
     };
 
     const handleClearClick = async () => {
-        await clearNotifications();
+        const originalNotifications = [...notifications]; // Store the original state
+        setNotifications([]); 
+    
+        try {
+            await clearNotifications(); 
+        } catch (error) {
+            console.log('Error clearing all notifications:', error);
+            setNotifications(originalNotifications); 
+        }
     };
 
   return (
@@ -41,7 +58,7 @@ const NotificationContent = () => {
                     <p>Clear:</p>
                     <TextButton onClick={handleClearClick} >All</TextButton>
                     <p>|</p>
-                    <TextButton>Read</TextButton>
+                    <TextButton onClick={handleClearReadClick} >Read</TextButton>
                 </NotificationControls>
             </div>
         </Header>
