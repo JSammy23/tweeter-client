@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../services/userContext';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LikeButton from './LikeButton';
 import Retweet from './Retweet';
 import CommentsButton from './CommentsButton';
@@ -16,9 +16,10 @@ const StandardTweet = ({ tweet, isMini }) => {
     
     const [isTweetMenuOpen, setIsTweetMenuOpen] = useState(false);
     const { currentUser } = useContext(UserContext);
-    const activeFilter = 'thread';
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const isProfileOrThreadPage = location.pathname.includes('/profile') || location.pathname.includes('/thread');
 
     const handleUserProfileClick = () => {
       navigate(`/profile/${tweet.author._id}`);
@@ -109,7 +110,7 @@ const StandardTweet = ({ tweet, isMini }) => {
                             <Handle isMini={isMini} onClick={handleUserProfileClick} >{tweet.author.username}</Handle>
                         </div>
                         <TweetDate isMini={isMini} >{formattedDate}</TweetDate>
-                        {tweet.author._id === currentUser._id && (activeFilter === 'profile' || activeFilter === 'thread') && (
+                        {tweet.author._id === currentUser._id && isProfileOrThreadPage && (
                           <MenuContainer>
                             <StyledIcon icon={faEllipsisH} onClick={toggleTweetMenu} />
     

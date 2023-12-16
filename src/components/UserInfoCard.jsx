@@ -1,8 +1,10 @@
 import FollowButton from './FollowButton';
 import { useHandleProfileClick } from '../hooks/useHandleProfileClick';
+import { UserContext } from '../services/userContext';
 
 import styled from 'styled-components';
 import { UserImage, Name, Handle } from '../styles/tweetStyles';
+import { useContext } from 'react';
 
 
 const UserCard = styled.div`
@@ -19,6 +21,7 @@ const Container = styled.div`
 `;
 
 const UserInfoCard = ({ user }) => {
+  const { currentUser } = useContext(UserContext);
   const handleUserProfileClick = useHandleProfileClick();
 
   return (
@@ -28,9 +31,11 @@ const UserInfoCard = ({ user }) => {
         <Name>{user?.fullName}</Name>
         <Handle onClick={() => handleUserProfileClick(user._id)}>{user?.username}</Handle>
       </div>
-      <Container>
-        <FollowButton user={user._id} />
-      </Container>
+      {currentUser && user && currentUser._id !== user._id && (
+        <Container>
+          <FollowButton user={user._id} />
+        </Container>
+      )}
     </UserCard>
   )
 }

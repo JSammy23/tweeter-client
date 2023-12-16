@@ -27,7 +27,7 @@ const FollowList = ({ user, followers, following, listType }) => {
     userList = followers;
   } else if (listType === 'following') {
     userList = following;
-  };
+  }
 
   const handleBackClick = () => {
     navigate(-1);
