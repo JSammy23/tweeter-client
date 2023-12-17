@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import Tweet from './Tweet';
+import { useLocation } from 'react-router-dom';
+
 
 import styled from 'styled-components';
 import { fetchSearchResults } from '../api';
@@ -43,6 +45,7 @@ const StyledButton = styled.button`
 const SearchContent = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [results, setResults] = useState([]);
+    const location = useLocation();
     
     const handleSearch = async () => {
         try {
@@ -52,6 +55,15 @@ const SearchContent = () => {
             console.error('Error fetching search results:', error);
         }
     };
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const query = queryParams.get('q');
+        if (query) {
+            setSearchTerm(query);
+            fetchSearchResults(query);
+        }
+    }, [location]);
 
   return (
     <div className='flex column align' >

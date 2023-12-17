@@ -61,15 +61,17 @@ const StandardTweet = ({ tweet, isMini }) => {
   
           // Add the entity as a link
           if (entity.type === 'mention') {
+            const mention = encodeURIComponent(entity.value);
             jsxParts.push(<span 
               className="mention" 
-              onClick={() => navigate(`/users/${entity.value.substring(1)}`)} >
+              onClick={() => navigate(`/search?q=${mention}`)} >
               {entity.value}
             </span>);
         } else if (entity.type === 'hashtag') {
+            const hashtag = encodeURIComponent(entity.value);
             jsxParts.push(<span 
               className="hashtag" 
-              onClick={() => navigate(`/hashtags/${entity.value.substring(1)}`)} >
+              onClick={() => navigate(`/search?q=${hashtag}`)} >
               {entity.value}
             </span>);
         }
