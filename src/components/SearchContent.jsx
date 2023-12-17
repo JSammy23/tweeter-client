@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Tweet from './Tweet';
 
 import styled from 'styled-components';
+import { fetchSearchResults } from '../api';
 
 const StyledInput = styled.input`
   width: 95%; // Adjust width as needed
@@ -44,9 +45,12 @@ const SearchContent = () => {
     const [results, setResults] = useState([]);
     
     const handleSearch = async () => {
-        const response = await fetch(`/api/search?q=${encodeURIComponent(searchTerm)}`);
-        const data = await response.json();
-        setResults(data);
+        try {
+            const data = await fetchSearchResults(searchTerm);
+            setResults(data);
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
     };
 
   return (
