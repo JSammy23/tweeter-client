@@ -72,7 +72,7 @@ const SearchContent = () => {
       } 
       return (
         <div>
-          {results.tweets && (
+          {results.tweets && results.tweets.length > 0 && (
             <div>
               <h3>Tweets</h3>
               {results.tweets.map(tweet => (
@@ -81,7 +81,7 @@ const SearchContent = () => {
             </div>
           )}
 
-          {results.mentions && (
+          {results.mentions && results.mentions.length > 0 && (
             <div>
               <h3>Mentions</h3>
               {results.mentions.map(mention => (
@@ -103,7 +103,8 @@ const SearchContent = () => {
     };
 
   return (
-    <div className='flex column align' >
+    <>
+      <div className='flex column align' >
         <SearchInput 
             type="text" 
             value={searchTerm} 
@@ -111,8 +112,9 @@ const SearchContent = () => {
             placeholder="Search with @ for users or mentions, and # for hashtags"
         />
         <StyledButton onClick={handleSearch}>Search</StyledButton>
-        {renderResults()}
-    </div>
+      </div>
+      {renderResults()}
+    </>
   );
 };
 
