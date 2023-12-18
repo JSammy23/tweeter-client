@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import Tweet from './Tweet';
 import { useLocation } from 'react-router-dom';
+import UserInfoCard from './UserInfoCard';
 
 
 import styled from 'styled-components';
 import { fetchSearchResults } from '../api';
 
-const StyledInput = styled.input`
+const SearchInput = styled.input`
   width: 95%; // Adjust width as needed
   padding: 10px; 
   margin-bottom: 10px;
@@ -65,16 +66,52 @@ const SearchContent = () => {
         }
     }, [location]);
 
+    const renderResults = () => {
+      if (!results) {
+        return <p>No results found.</p>
+      } 
+      return (
+        <div>
+          {results.tweets && (
+            <div>
+              <h3>Tweets</h3>
+              {results.tweets.map(tweet => (
+                <Tweet key={tweet._id} tweet={tweet} />
+              ))}
+            </div>
+          )}
+
+          {results.mentions && (
+            <div>
+              <h3>Mentions</h3>
+              {results.mentions.map(mention => (
+                <Tweet key={mention._id} tweet={mention} />
+              ))}
+            </div>
+          )}
+
+          {results.users && (
+            <div>
+              <h3>Users</h3>
+              {results.users.map(user => (
+                <UserInfoCard key={user._id} user={user} />
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    };
+
   return (
     <div className='flex column align' >
-        <StyledInput 
+        <SearchInput 
             type="text" 
             value={searchTerm} 
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search with @ for users or mentions, and # for hashtags"
         />
         <StyledButton onClick={handleSearch}>Search</StyledButton>
-        {/* Render search results */}
+        {renderResults()}
     </div>
   );
 };
