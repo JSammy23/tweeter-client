@@ -35,12 +35,18 @@ const StyledButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1em;
 
   &:hover {
-    background-color: ${props => props.theme.colors.primaryDark}; // Slightly darker on hover
+    background-color: ${props => props.theme.colors.accent}; // Slightly darker on hover
   }
 `;
+
+/*      ******** TO DO *********
+ 1. Set URL params on search so after clicking a result history works.
+ 2. For longer results save position for backclicking to load at the same spot.
+*/
+
 
 
 const SearchContent = () => {
