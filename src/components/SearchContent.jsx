@@ -62,7 +62,9 @@ const SearchContent = () => {
         const query = queryParams.get('q');
         if (query) {
             setSearchTerm(query);
-            fetchSearchResults(query);
+            fetchSearchResults(query).then(setResults).catch(error => {
+              console.error('Error fetching search results:', error);
+            });
         }
     }, [location]);
 
