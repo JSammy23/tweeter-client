@@ -45,10 +45,14 @@ const FeedContainer = styled.div`
   overflow-y: auto;
  }
 
- /* @media (min-width: 683px) and (max-width: 838px) {
-    flex-shrink: 0;
+ @media (max-width: 838px) {
+    /* flex-shrink: 0; */
     max-width: 683px;
-  } */
+  }
+
+ @media (min-width: 838px) {
+  min-width: 683px;
+ }
 
 
  /* Hide the scrollbar */
