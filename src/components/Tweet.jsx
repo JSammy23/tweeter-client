@@ -1,5 +1,6 @@
 import ReplyTweet from './ReplyTweet';
 import StandardTweet from './StandardTweet';
+import MissingTweet from './MissingTweet';
 
 import styled from 'styled-components';
 
@@ -8,12 +9,21 @@ import styled from 'styled-components';
 // 2. Return the appropiate tweet component and pass the tweet object prop
 
 const Tweet = ({ tweet }) => {
-    
-  if (tweet.replyTo === null) {
-    return <StandardTweet tweet={tweet} />
-  } else {
-    return <ReplyTweet initialTweet={tweet} />
+  // Handle deleted tweets
+  if (tweet.isDeleted) {
+    // console.log('Missing Tweet determined by Tweet Component!');
+    return <MissingTweet />;
   }
+
+  // Handle replies
+  if (tweet.replyTo !== null) {
+    // console.log('Reply Tweet determined by Tweet Component!');
+    return <ReplyTweet initialTweet={tweet} />;
+  }
+
+  // Default to rendering a standard tweet
+  // console.log('Standard Tweet determined by Tweet Component!');
+  return <StandardTweet tweet={tweet} />;
 };
 
-export default Tweet
+export default Tweet;
