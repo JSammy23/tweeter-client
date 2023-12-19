@@ -16,26 +16,26 @@ height: 100vh;
 `;
 
 export const Logo = styled.h1`
-color: ${props => props.theme.colors.primary};
-font-size: 2em;
-padding: .5em 0;
-
-@media (max-width: 683px) {
-    display: none;
-}
+ color: ${props => props.theme.colors.primary};
+ font-size: 2em;
+ padding: .5em 0;
+ 
+ @media (max-width: 683px) {
+     display: none;
+ }
 `;
 
 export const Wrapper = styled.div`
-width: 95%;
-display: flex;
-justify-content: center;
-background-color: transparent;
-margin-right: auto;
-margin-left: auto;
-
-@media (max-width: 683px) {
-    width: 100%;
-}
+ width: 95%;
+ display: flex;
+ justify-content: center;
+ background-color: transparent;
+ margin-right: auto;
+ margin-left: auto;
+ 
+ @media (max-width: 683px) {
+     width: 100%;
+ }
 `;
 
 export const Title = styled.h2`
