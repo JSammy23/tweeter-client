@@ -31,8 +31,12 @@ const FeedContainer = styled.div`
  border-left: 1px solid;
  border-color: ${props => props.theme.colors.secondary};
 
- @media (min-width: 838px) {
+ @media (min-width: 773px) {
   min-width: 683px;
+ }
+
+ @media (min-width: 683px) {
+  min-width: 600px;
  }
 
  @media (max-width: 683px) {
@@ -41,10 +45,11 @@ const FeedContainer = styled.div`
   overflow-y: auto;
  }
 
- @media (min-width: 683px) and (max-width: 838px) {
-    /* flex-shrink: 0; */
-    min-width: 600px;
-  }
+ /* @media (min-width: 683px) and (max-width: 838px) {
+    flex-shrink: 0;
+    max-width: 683px;
+  } */
+
 
  /* Hide the scrollbar */
  &::-webkit-scrollbar {
