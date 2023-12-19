@@ -30,13 +30,13 @@ const Thread = () => {
   const { currentUser } = useContext(UserContext);
   const { threadId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [activeThread, setActiveThread] = useState('');
+  const [activeThread, setActiveThread] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchThread = async () => {
-      try {
+            try {
         setIsLoading(true);
         const tweet = await fetchTweetAndReplies(threadId);
         setActiveThread(tweet);
@@ -52,7 +52,11 @@ const Thread = () => {
   
 
   const mapRepliesToTweetComponents = () => {
-    return activeThread.replies?.map((reply) => (
+    if (!activeThread || !activeThread.replies) {
+      return null;
+    }
+
+    return activeThread.replies.map((reply) => (
       // This will be the only place we bypass the tweet comp for a standard tweet for replies
       <StandardTweet 
         key={reply._id} 
@@ -77,9 +81,12 @@ const Thread = () => {
             <h2>Tweet</h2>
             <StyledIcon icon={faArrowLeft} onClick={handleBackClick} />
         </Header>    
-        <Tweet 
-         key={activeThread._id} 
-         tweet={activeThread} />
+        {/* Render Tweet only if activeThread is set */}
+        {activeThread && (
+          <Tweet 
+          key={activeThread._id} 
+          tweet={activeThread} />
+        )}
         <Compose 
          action='reply'
          isReply
