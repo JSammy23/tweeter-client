@@ -49,7 +49,6 @@ const ReplyTweet = ({ initialTweet }) => {
                 <MissingTweet key={index} isMini /> :
                 <StandardTweet key={tweet._id || index} tweet={tweet} isMini={index !== thread.length - 1} />
             )}
-            <StandardTweet tweet={initialTweet} key={initialTweet._id} />
         </div>
     );
 };
