@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
 import Sidebar from '../../components/Sidebar';
 import Loading from '../../components/Loading/Loading';
-import { UserContext } from '../../services/userContext';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../features/user/userSlice';
 import { fetchCurrentUser } from '../../api';
 
 import styled from 'styled-components';
@@ -84,21 +85,21 @@ const FeedContainer = styled.div`
 
 const FeedPage = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const { setCurrentUser } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const setCurrentUserAsync = async () => {
       setLoading(true);
       try {
         const user = await fetchCurrentUser();
-        setCurrentUser(user)
+        dispatch(setUser(user));
       } catch (error) {
         console.error("Failed to fetch current user", error);
       }
       setLoading(false)
     }
     setCurrentUserAsync()
-  }, [setCurrentUser]);
+  }, [dispatch]);
 
   if (loading) {
     return <Loading/>
