@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Logo } from '../styles/styledComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter } from '@fortawesome/fontawesome-free-brands';
 import { faHome, faHashtag, faUser, faSearch, faBell } from '@fortawesome/fontawesome-free-solid';
-import { UserContext } from '../services/userContext';
+import { useSelector } from 'react-redux';
 import LogoutButton from './LogoutButton';
 
 
@@ -104,7 +103,7 @@ const UserControls = styled.div`
 
 const Sidebar = () => {
 
-    const { currentUser } = useContext(UserContext);
+    const currentUser = useSelector(state => state.user.currentUser);
 
     const navItems = [
         {id: 'home', icon: faHome, text: 'Home', route: '/home'},

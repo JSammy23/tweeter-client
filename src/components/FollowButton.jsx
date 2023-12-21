@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../services/userContext';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { followUser } from '../api/users';
 
 import styled from 'styled-components';
@@ -15,7 +15,7 @@ const Checkmark = styled.span`
 
 const FollowButton = ({ user }) => {
     const [isFollowing, setIsFollowing] = useState(false);
-    const { currentUser } = useContext(UserContext);
+    const currentUser = useSelector(state => state.user.currentUser);
   
     useEffect(() => {
       checkIsFollowing();

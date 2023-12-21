@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditProfile from './Edit Profile/EditProfile';
 import FollowButton from './FollowButton';
 import { updateUser } from '../api';
 import UserProfileControls from './UserProfileControls';
-import { UserContext } from '../services/userContext';
+import { useSelector } from 'react-redux';
 import TweetFetcher from './TweetFetcher';
 import { fetchUserTweetsAndLikes } from "../api/tweets";
 
@@ -69,7 +69,7 @@ const UserProfile = ({ user, showLikes }) => {
     const [localFirstName, setLocalFirstName] = useState('');
     const [localLastName, setLocalLastName] = useState('');
     const [userProfileImg, setUserProfileImg] = useState('');
-    const { currentUser } = useContext(UserContext);
+    const currentUser = useSelector(state => state.user.currentUser);
 
     useEffect(() => {
         if (currentUser?._id === user?._id) {

@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react';
-import { UserContext } from '../services/userContext';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LikeButton from './LikeButton';
@@ -15,7 +15,7 @@ import { faEllipsisH } from '@fortawesome/fontawesome-free-solid';
 const StandardTweet = ({ tweet, isMini }) => {
     
     const [isTweetMenuOpen, setIsTweetMenuOpen] = useState(false);
-    const { currentUser } = useContext(UserContext);
+    const currentUser = useSelector(state => state.user.currentUser);
 
     const navigate = useNavigate();
     const location = useLocation();

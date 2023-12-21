@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Tweet from './Tweet';
 import StandardTweet from './StandardTweet';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UserContext } from '../services/userContext';
+import { useSelector } from 'react-redux';
 import Compose from './Compose';
 
 import styled from 'styled-components';
@@ -27,7 +27,7 @@ const StyledIcon = styled(FontAwesomeIcon)`
 // TODO:
 
 const Thread = () => {
-  const { currentUser } = useContext(UserContext);
+  const currentUser = useSelector(state => state.user.currentUser);
   const { threadId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [activeThread, setActiveThread] = useState(null);

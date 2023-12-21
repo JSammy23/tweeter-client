@@ -1,6 +1,6 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { composeTweet } from '../api/tweets';
-import { UserContext } from '../services/userContext';
+import { useSelector } from 'react-redux';
 
 import { TweetCard, UserImage } from '../styles/tweetStyles';
 import { Button } from '../styles/styledComponents';
@@ -47,7 +47,7 @@ const Controls = styled.div`
 /****** Component ******/
 const Compose = ({ action, isReply, activeThread, addReply }) => {
     const [editorState, setEditorState] = useState('');
-    const { currentUser } = useContext(UserContext);
+    const currentUser = useSelector(state => state.user.currentUser);
     const placeholder = action === 'tweet' ? "What's Happening?" : "Tweet your reply!";
 
     const handleInputChange = (e) => {

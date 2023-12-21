@@ -1,10 +1,9 @@
 import FollowButton from './FollowButton';
 import { useHandleProfileClick } from '../hooks/useHandleProfileClick';
-import { UserContext } from '../services/userContext';
+import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { UserImage, Name, Handle } from '../styles/tweetStyles';
-import { useContext } from 'react';
 
 
 const UserCard = styled.div`
@@ -21,7 +20,7 @@ const Container = styled.div`
 `;
 
 const UserInfoCard = ({ user }) => {
-  const { currentUser } = useContext(UserContext);
+  const currentUser = useSelector(state => state.user.currentUser);
   const handleUserProfileClick = useHandleProfileClick();
 
   return (
