@@ -21,6 +21,9 @@ export const tweetsApi = createApi({
         getExploreTweets: builder.query({
             query: ({ limit = 50, skip = 0 }) => `explore?limit=${limit}&skip=${skip}`,
         }),
+        getTweetThread: builder.query({
+            query: (tweetId) => `thread/${tweetId}`,
+        }),
         // Add other endpoints
         interactWithTweet: builder.mutation({
             query: ({ tweetId, action }) => ({
@@ -35,7 +38,8 @@ export const tweetsApi = createApi({
 export const {
     useGetHomeTweetsQuery,
     useInteractWithTweetMutation,
-    useGetExploreTweetsQuery
+    useGetExploreTweetsQuery,
+    useGetTweetThreadQuery,
 } = tweetsApi;
 
 /****** Fetch Tweets ********/
