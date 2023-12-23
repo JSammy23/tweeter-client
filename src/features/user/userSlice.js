@@ -20,8 +20,16 @@ export const userSlice = createSlice({
                 state.currentUser.likes = state.currentUser.likes.filter(id => id !== tweetId);
             }
         },
+        updateUserRetweets: (state, action) => {
+            const { tweetId, isRetweeted } = action.payload;
+            if (!isRetweeted) {
+                state.currentUser.retweets.push(tweetId);
+            } else {
+                state.currentUser.retweets = state.currentUser.retweets.filter(id => id !== tweetId);
+            }
+        },
     },
 });
 
-export const { setUser, clearUser, updateUserLikes } = userSlice.actions;
+export const { setUser, clearUser, updateUserLikes, updateUserRetweets } = userSlice.actions;
 export default userSlice.reducer;
