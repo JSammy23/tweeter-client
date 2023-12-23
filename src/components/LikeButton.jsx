@@ -15,7 +15,7 @@ const LikeButton = ({ tweet }) => {
     const [likes, setLikes] = useState(tweet.likesCount || 0);
     const currentUser = useSelector((state) => state.user.currentUser);
     const isLiked = currentUser.likes.includes(tweet._id);
-    const [interactWithTweet] = useInteractWithTweetMutation()
+    const [interactWithTweet] = useInteractWithTweetMutation();
 
     const handleLike = async () => {
       try {
