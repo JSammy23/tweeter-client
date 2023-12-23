@@ -1,27 +1,61 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 const BASE_URL = 'http://localhost:3000/tweets';
+
+export const tweetsApi = createApi({
+    reducerPath: 'tweetsApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'http://localhost:3000/tweets/',
+        prepareHeaders: (headers, { getState }) => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                headers.set('Authorization', token);
+            }
+            return headers;
+        },
+    }),
+    endpoints: (builder) => ({
+        getHomeTweets: builder.query({
+            query: ({ limit = 50, skip = 0 }) => `home?limit=${limit}&skip=${skip}`,
+        }),
+        // Add other endpoints
+        interactWithTweet: builder.mutation({
+            query: ({ tweetId, action }) => ({
+                url: `${tweetId}/interact`,
+                method: 'PUT',
+                body: {action},
+            }),
+        }),
+    }),
+});
+
+export const {
+    useGetHomeTweetsQuery,
+    useInteractWithTweetMutation
+} = tweetsApi;
 
 /****** Fetch Tweets ********/
 
 // Fetch Tweets for Home content
-export const fetchHomeTweets = async (limit = 100, skip = 0) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${BASE_URL}/home?limit=${limit}&skip=${skip}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `${token}`
-        }
-    })
+// export const fetchHomeTweets = async (limit = 100, skip = 0) => {
+//     const token = localStorage.getItem('token');
+//     const response = await fetch(`${BASE_URL}/home?limit=${limit}&skip=${skip}`, {
+//         method: "GET",
+//         headers: {
+//             "Content-Type": "application/json",
+//             "Authorization": `${token}`
+//         }
+//     })
 
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-    }
+//     if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.message);
+//     }
 
-    const tweets = await response.json();
-    console.log(tweets); // Remove before production
-    return tweets;
-};
+//     const tweets = await response.json();
+//     console.log(tweets); // Remove before production
+//     return tweets;
+// };
 
 // Fetch Tweets for Explore content
 export const fetchExploreTweets = async (limit = 100, skip = 0) => {
@@ -129,7 +163,7 @@ export const softDeleteTweet = async (tweetId) => {
     return data;
 };
 
-/****** Interact with Tweet ******/
+// /****** Interact with Tweet ******/
 export const interactWithTweet = async (tweetId, action) => {
     const token = localStorage.getItem('token');
     const body = { action: action };
