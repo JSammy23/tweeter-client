@@ -4,12 +4,13 @@ import StandardTweet from './StandardTweet';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Compose from './Compose';
+import { useGetTweetThreadQuery } from '../api/tweets';
 
 import styled from 'styled-components';
 import { Header } from '../styles/styledComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/fontawesome-free-solid';
-import { fetchTweetAndReplies } from '../api/tweets';
+
 
 
 
@@ -27,48 +28,36 @@ const StyledIcon = styled(FontAwesomeIcon)`
 // TODO:
 
 const Thread = () => {
-  const currentUser = useSelector(state => state.user.currentUser);
   const { threadId } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [activeThread, setActiveThread] = useState(null);
-
+  const { data: activeThread, isLoading, isError, refetch } = useGetTweetThreadQuery(threadId);
+  const [localReplies, setLocalReplies] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchThread = async () => {
-            try {
-        setIsLoading(true);
-        const tweet = await fetchTweetAndReplies(threadId);
-        setActiveThread(tweet);
-      } catch (error) {
-        console.error("Error fetching thread:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    if (activeThread && activeThread.replies) {
+      setLocalReplies(activeThread.replies);
     }
-    fetchThread()
-  }, [threadId]);
+  }, [activeThread]);
+
+  const handleAddReply = (newReply) => {
+    setLocalReplies(prevReplies => [newReply, ...prevReplies]);
+    // Optionally trigger a refetch or invalidate tags here if needed
+    refetch();
+  };
   
   
 
   const mapRepliesToTweetComponents = () => {
-    if (!activeThread || !activeThread.replies) {
+    if (!localReplies) {
       return null;
     }
 
-    return activeThread.replies.map((reply) => (
+    return localReplies.map((reply) => (
       // This will be the only place we bypass the tweet comp for a standard tweet for replies
       <StandardTweet 
         key={reply._id} 
         tweet={reply} />
     ));
-  };
-
-  const handleAddReply = (newReply) => {
-    setActiveThread((prevActiveThread) => ({
-      ...prevActiveThread,
-      replies: [newReply, ...prevActiveThread.replies]
-    }));
   };
 
   const handleBackClick = () => {
