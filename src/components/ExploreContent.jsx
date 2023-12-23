@@ -1,14 +1,17 @@
 import Compose from './Compose';
-import TweetFetcher from './TweetFetcher';
-import { fetchExploreTweets } from '../api/tweets';
+import TweetList from './TweetList';
+import { useGetExploreTweetsQuery } from '../api';
 
 const ExploreContent = () => {
+  const { data: tweets, isLoading, isError } = useGetExploreTweetsQuery({ limit: 50, skip: 0 });
+
+
   return (
     <>
         <Compose action='tweet' />
-        <TweetFetcher fetchDataFunction={fetchExploreTweets} showType='exploreTweets' />
+        {isLoading ? <p>Loading...</p> : isError ? <p>Error Loading Tweets</p> : <TweetList tweets={tweets} />}
     </>
   )
 }
 
-export default ExploreContent
+export default ExploreContent;
