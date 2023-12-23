@@ -1,6 +1,7 @@
-import { useState, useContext } from 'react';
-import { UserContext } from '../services/userContext';
-import { interactWithTweet } from '../api/tweets';
+import { useState } from 'react';
+import { useInteractWithTweetMutation } from '../api';
+import { updateUserLikes } from '../features/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,29 +11,27 @@ import { TweetReactionsCount } from '../styles/tweetStyles';
 
 
 const LikeButton = ({ tweet }) => {
+    const dispatch = useDispatch();
     const [likes, setLikes] = useState(tweet.likesCount || 0);
-    const { currentUser, updateUser } = useContext(UserContext);
+    const currentUser = useSelector((state) => state.user.currentUser);
     const isLiked = currentUser.likes.includes(tweet._id);
+    const [interactWithTweet] = useInteractWithTweetMutation()
 
     const handleLike = async () => {
       try {
           if (isLiked) {
-              await interactWithTweet(tweet._id, 'like');
-              // If successful, update UI and state
-              const updatedLikes = currentUser.likes.filter(id => id !== tweet._id);
-              updateUser({ ...currentUser, likes: updatedLikes });
+              await interactWithTweet({ tweetId: tweet._id, action: 'like' });
+              dispatch(updateUserLikes({ tweetId: tweet._id, isLiked }));
               setLikes(likes - 1);
           } else {
-              await interactWithTweet(tweet._id, 'like');
-              // If successful, update UI and state
-              const updatedLikes = [...currentUser.likes, tweet._id];
-              updateUser({ ...currentUser, likes: updatedLikes });
+              await interactWithTweet({ tweetId: tweet._id, action: 'like' });
+              dispatch(updateUserLikes({ tweetId: tweet._id, isLiked }));
               setLikes(likes + 1);
           }
-      } catch (error) {
+        } catch (error) {
           console.error("Error interacting with tweet:", error);
       }
-  };
+    };
 
   return (
     <div>
