@@ -10,6 +10,7 @@ import DeleteTweetButton from './DeleteTweetButton';
 import styled from 'styled-components';
 import { TweetCard, TweetHeader, FlexDiv, UserImage, Name, Handle, TweetDate, TweetBody, TweetReactions, StyledIcon, MenuContainer, MenuOptions, LeftThreadLine } from '../styles/tweetStyles';
 import { faEllipsisH } from '@fortawesome/fontawesome-free-solid';
+import MissingTweet from './MissingTweet';
 
 
 const StandardTweet = ({ tweet, isMini }) => {
@@ -93,6 +94,10 @@ const StandardTweet = ({ tweet, isMini }) => {
         date = tweet.date.toDate(); // convert timestamp to Date object
       } 
         formattedDate = format(date, "h:mm bbb MM/dd/yyy");
+    }
+
+    if (tweet.isDeleted) {
+      return <MissingTweet />;
     }
 
     return (
