@@ -1,6 +1,7 @@
-import { useState, useContext } from 'react';
-import { UserContext } from '../services/userContext';
-import { interactWithTweet } from '../api/tweets';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useInteractWithTweetMutation } from '../api';
+import { updateUserRetweets } from '../features/user/userSlice';
 
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,24 +16,24 @@ export const StyledIcon = styled(FontAwesomeIcon)`
 `;
 
 const Retweet = ({ tweet }) => {
-  const [retweets, setRetweets] = useState(tweet.retweetsCount || 0);
-  const { currentUser, updateUser } = useContext(UserContext);
+  const dispatch = useDispatch();
+  const [retweetsCount, setRetweetsCount] = useState(tweet.retweetsCount || 0);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const isRetweeted = currentUser.retweets.includes(tweet._id);
+  const [interactWithTweet] = useInteractWithTweetMutation();
 
   const handleRetweet = async () => {
     try {
         if (isRetweeted) {
-            await interactWithTweet(tweet._id, 'retweet');
+            await interactWithTweet({ tweetId: tweet._id, action: 'retweet'});
             // If successful, update UI and state
-            const updatedRetweets = currentUser.retweets.filter(id => id !== tweet._id);
-            updateUser({ ...currentUser, retweets: updatedRetweets });
-            setRetweets(retweets - 1);
+            dispatch(updateUserRetweets({ tweetId: tweet._id, isRetweeted }));
+            setRetweetsCount(retweetsCount - 1);
         } else {
-            await interactWithTweet(tweet._id, 'retweet');
+            await interactWithTweet({ tweetId: tweet._id, action: 'retweet'});
             // If successful, update UI and state
-            const updatedRetweets = [...currentUser.retweets, tweet._id];
-            updateUser({ ...currentUser, retweets: updatedRetweets });
-            setRetweets(retweets + 1);
+            dispatch(updateUserRetweets({ tweetId: tweet._id, isRetweeted }));
+            setRetweetsCount(retweetsCount + 1);
         }
     } catch (error) {
         console.error("Error interacting with tweet:", error);
@@ -42,7 +43,7 @@ const Retweet = ({ tweet }) => {
   return (
       <div>
           <StyledIcon icon={faRetweet} active={isRetweeted}  onClick={handleRetweet} />
-          {retweets > 0 && <TweetReactionsCount>{retweets}</TweetReactionsCount>}
+          {retweetsCount > 0 && <TweetReactionsCount>{retweetsCount}</TweetReactionsCount>}
       </div>
   )
 }
