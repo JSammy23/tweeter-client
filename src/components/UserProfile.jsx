@@ -4,8 +4,8 @@ import FollowButton from './FollowButton';
 import { updateUser } from '../api';
 import UserProfileControls from './UserProfileControls';
 import { useSelector } from 'react-redux';
-import TweetFetcher from './TweetFetcher';
-import { fetchUserTweetsAndLikes } from "../api/tweets";
+import { useGetUserTweetsAndLikesQuery } from '../api';
+import TweetList from './TweetList';
 
 import styled from 'styled-components';
 import { Title, UserHandle, Button } from '../styles/styledComponents';
@@ -61,7 +61,7 @@ const StyledLink = styled(Link)`
 `;
 
 
-const UserProfile = ({ user, showLikes }) => {
+const UserProfile = ({ user, tweets }) => {
 
     const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
@@ -145,7 +145,7 @@ const UserProfile = ({ user, showLikes }) => {
             setLocalLastName={setLocalLastName}
             updateUserProfileImg={setUserProfileImg} />)}
         </ProfileCard>
-        <TweetFetcher fetchDataFunction={() => fetchUserTweetsAndLikes(user._id)} showLikes={showLikes} showType='userProfile' />
+        <TweetList tweets={tweets} />
     </>
   );
 };
