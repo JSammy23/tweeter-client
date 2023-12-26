@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Tweet from './Tweet';
 import StandardTweet from './StandardTweet';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import Compose from './Compose';
 import { useGetTweetThreadQuery } from '../api/tweets';
 
@@ -44,9 +43,11 @@ const Thread = () => {
     // Optionally trigger a refetch or invalidate tags here if needed
     refetch();
   };
-  
-  
 
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+  
   const mapRepliesToTweetComponents = () => {
     if (!localReplies) {
       return null;
@@ -58,10 +59,6 @@ const Thread = () => {
         key={reply._id} 
         tweet={reply} />
     ));
-  };
-
-  const handleBackClick = () => {
-    navigate(-1);
   };
 
   return (
@@ -86,4 +83,4 @@ const Thread = () => {
   )
 }
 
-export default Thread
+export default Thread;
