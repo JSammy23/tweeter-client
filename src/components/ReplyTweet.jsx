@@ -1,4 +1,5 @@
 import StandardTweet from './StandardTweet';
+import Tweet from './Tweet';
 import { useGetTweetThreadQuery } from '../api/tweets';
 
 const ReplyTweet = ({ initialTweet }) => {
@@ -14,9 +15,9 @@ const ReplyTweet = ({ initialTweet }) => {
 
     const renderTweetAndReplies = (tweet, isInitialTweet = false) => {
         return (
-            <div key={tweet._id}>
-                {tweet.replyTo && (
-                    <StandardTweet tweet={tweet.replyTo} isMini />
+            <div>
+                {tweet.baseTweet.replyTo && (
+                    <StandardTweet key={tweet.baseTweet._id} tweet={tweet.baseTweet.replyTo} isMini />
                 )}
                 <StandardTweet tweet={tweet} isMini={!isInitialTweet} />
                 {tweet.replies && tweet.replies.map(reply => renderTweetAndReplies(reply))}
