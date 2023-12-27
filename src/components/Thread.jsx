@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react'
-import Tweet from './Tweet';
 import StandardTweet from './StandardTweet';
 import { useNavigate, useParams } from 'react-router-dom';
 import Compose from './Compose';
 import { useGetTweetThreadQuery } from '../api/tweets';
+import TweetList from './TweetList';
 
 import styled from 'styled-components';
 import { Header } from '../styles/styledComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/fontawesome-free-solid';
-
-
 
 
 const StyledIcon = styled(FontAwesomeIcon)`
@@ -24,63 +21,68 @@ const StyledIcon = styled(FontAwesomeIcon)`
  }
 `;
 
-// TODO:
 
 const Thread = () => {
   const { threadId } = useParams();
-  const { data: activeThread, isLoading, isError, refetch } = useGetTweetThreadQuery(threadId);
-  const [localReplies, setLocalReplies] = useState([]);
+  const { data: threadData, isLoading, isError, refetch } = useGetTweetThreadQuery(threadId);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (activeThread && activeThread.replies) {
-      setLocalReplies(activeThread.replies);
-    }
-  }, [activeThread]);
-
-  const handleAddReply = (newReply) => {
-    setLocalReplies(prevReplies => [newReply, ...prevReplies]);
-    // Optionally trigger a refetch or invalidate tags here if needed
+  const handleAddReply = () => {
     refetch();
   };
 
   const handleBackClick = () => {
     navigate(-1);
   };
-  
-  const mapRepliesToTweetComponents = () => {
-    if (!localReplies) {
-      return null;
-    }
 
-    return localReplies.map((reply) => (
-      // This will be the only place we bypass the tweet comp for a standard tweet for replies
-      <StandardTweet 
-        key={reply._id} 
-        tweet={reply} />
-    ));
-  };
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError || !threadData) {
+    return <p>Error loading thread.</p>;
+  }
+
+  const { baseTweet, replies } = threadData;
+  
 
   return (
     <>
         <Header>
             <h2>Tweet</h2>
             <StyledIcon icon={faArrowLeft} onClick={handleBackClick} />
-        </Header>    
-        {/* Render Tweet only if activeThread is set */}
-        {activeThread && (
-          <Tweet 
-          key={activeThread._id} 
-          tweet={activeThread} />
+        </Header>
+
+        {/* Render thread tweet if it exists and is different from replyTo */}
+        {baseTweet.thread && baseTweet.thread._id !== baseTweet.replyTo?._id && (
+            <StandardTweet key={baseTweet.thread._id} tweet={baseTweet.thread} isMini />
         )}
+
+        {/* Render replyTo tweet if it exists */}
+        {baseTweet.replyTo && (
+            <StandardTweet key={baseTweet.replyTo._id} tweet={baseTweet.replyTo} isMini />
+        )}
+
+        {/* Render baseTweet */}
+        {baseTweet && (
+            <StandardTweet 
+                key={baseTweet._id} 
+                tweet={baseTweet} 
+            />
+        )}
+
         <Compose 
-         action='reply'
-         isReply
-         activeThread={activeThread}
-         addReply={handleAddReply} />
-        {mapRepliesToTweetComponents()}
+            action='reply'
+            isReply
+            activeThread={baseTweet}
+            addReply={handleAddReply} 
+        />
+
+        {replies && replies.length > 0 && (
+            <TweetList tweets={replies} standardOnly />
+        )}
     </>
-  )
-}
+  );
+};
 
 export default Thread;
