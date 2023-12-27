@@ -6,6 +6,7 @@ import UserInfoCard from './UserInfoCard';
 
 import styled from 'styled-components';
 import { fetchSearchResults } from '../api';
+import StandardTweet from './StandardTweet';
 
 const SearchInput = styled.input`
   width: 95%; // Adjust width as needed
@@ -84,7 +85,7 @@ const SearchContent = () => {
             <div>
               <h3>Tweets</h3>
               {results.tweets.map(tweet => (
-                <Tweet key={tweet._id} tweet={tweet} />
+                <StandardTweet key={tweet._id} tweet={tweet} />
               ))}
             </div>
           )}
@@ -92,8 +93,8 @@ const SearchContent = () => {
           {results.mentions && results.mentions.length > 0 && (
             <div>
               <h3>Mentions</h3>
-              {results.mentions.map(mention => (
-                <Tweet key={mention._id} tweet={mention} />
+              {results.mentions.map((mention, index) => (
+                <StandardTweet key={index} tweet={mention} />
               ))}
             </div>
           )}
