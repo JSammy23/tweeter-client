@@ -17,10 +17,10 @@ const ReplyTweet = ({ initialTweet }) => {
         return (
             <div>
                 {tweet.baseTweet.replyTo && (
-                    <StandardTweet key={tweet.baseTweet._id} tweet={tweet.baseTweet.replyTo} isMini />
+                    <StandardTweet key={tweet.baseTweet.replyTo._id} tweet={tweet.baseTweet.replyTo} isMini />
                 )}
-                <StandardTweet tweet={tweet} isMini={!isInitialTweet} />
-                {tweet.replies && tweet.replies.map(reply => renderTweetAndReplies(reply))}
+                <StandardTweet tweet={tweet.baseTweet} key={tweet.baseTweet._id} isMini={!isInitialTweet} />
+                {/* {tweet.replies && tweet.replies.map(reply => renderTweetAndReplies(reply))} */}
             </div>
         );
     };
