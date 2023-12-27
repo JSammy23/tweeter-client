@@ -100,6 +100,15 @@ const StandardTweet = ({ tweet, isMini }) => {
       return <MissingTweet />;
     }
 
+    if (!tweet) {
+      return <p>Error loading standard tweet.</p>
+    }
+
+    // Check if author data is available
+    if (!tweet.author) {
+      return <p>Author data not available.</p>;
+    }
+
     return (
         <>
           {/* {tweet.retweets > 0 && activeFilter === 'home' && <RetweetList tweet={tweet} />} */}
