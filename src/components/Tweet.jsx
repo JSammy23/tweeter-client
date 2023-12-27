@@ -16,7 +16,7 @@ const Tweet = ({ tweet }) => {
   }
 
   // Handle replies
-  if (tweet.replyTo !== null) {
+  if (tweet.replyTo || tweet.thread) {
     // console.log('Reply Tweet determined by Tweet Component!');
     return <ReplyTweet initialTweet={tweet} />;
   }
