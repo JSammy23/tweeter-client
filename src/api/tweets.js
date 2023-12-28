@@ -28,6 +28,9 @@ export const tweetsApi = createApi({
         getUserTweetsAndLikes: builder.query({
             query: ({ userId, limit = 100, skip = 0 }) => `profile/${userId}?limit=${limit}&skip=${skip}`,
         }),
+        getRepliesToTweet: builder.query({
+            query: ({tweetId, limit = 75, skip = 0, sort = 'date' }) => `replies/${tweetId}?limit=${limit}&skip=${skip}&sort=${sort}`,
+        }),
         /****** Interact with Tweet ******/
         interactWithTweet: builder.mutation({
             query: ({ tweetId, action }) => ({
@@ -45,6 +48,7 @@ export const {
     useGetExploreTweetsQuery,
     useGetTweetThreadQuery,
     useGetUserTweetsAndLikesQuery,
+    useGetRepliesToTweetQuery,
 } = tweetsApi;
 
 
