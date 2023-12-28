@@ -1,12 +1,19 @@
 import { useGetHomeTweetsQuery } from '../api/tweets';
 import Compose from './Compose';
 import TweetList from './TweetList';
+import { useState } from 'react';
 
 import styled from 'styled-components';
 
 
 const HomeContent = () => {
-    const { data: tweets, isLoading, isError } = useGetHomeTweetsQuery({ limit: 50, skip: 0 });
+  const [skip, setSkip] = useState(0);
+  const { data: tweets, isLoading, isError } = useGetHomeTweetsQuery({ limit: 50, skip: skip });
+  
+  const handleLoadMore = () => {
+    const newSkip = skip + 50;
+    setSkip(newSkip);
+  };
 
   return (
     <>
@@ -16,4 +23,4 @@ const HomeContent = () => {
   )
 }
 
-export default HomeContent
+export default HomeContent;
