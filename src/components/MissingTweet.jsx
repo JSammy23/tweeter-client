@@ -2,7 +2,7 @@ import React from 'react';
 import userImg from '../assets/user.png'
 
 import styled, { keyframes } from 'styled-components';
-import { TweetCard, TweetHeader, TweetBody, UserImage, FlexDiv, LeftThreadLine } from '../styles/tweetStyles';
+import { TweetCard, TweetHeaderContainer, TweetBody, UserImage, FlexDiv, LeftThreadLine } from '../styles/tweetStyles';
 
 const loadingAnimation = keyframes`
   0% { 
@@ -50,14 +50,14 @@ const MissingTweet = ({ isMini }) => {
         {isMini && <LeftThreadLine />}
         <UserImage src={userImg} isMini={isMini} />
         <div className="flex column">
-          <TweetHeader>
+          <TweetHeaderContainer>
             <FlexDiv>
               <div className="flex align">
                 <Placeholder height="1.5em" width="30%" color='red' /> 
               </div>
               <Placeholder height="1.5em" width="20%" /> 
             </FlexDiv>
-          </TweetHeader>
+          </TweetHeaderContainer>
           <TweetBody isMini={isMini}>
             <Placeholder height="3em" width='75%' /> 
           </TweetBody>

@@ -25,7 +25,7 @@ export const LeftThreadLine = styled.div`
  margin-right: 2em;
 `;
 
-export const TweetHeader = styled.div`
+export const TweetHeaderContainer = styled.div`
  width: 100%;
  display: flex;
 `;
