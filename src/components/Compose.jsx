@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { composeTweet } from '../api/tweets';
 import { useSelector } from 'react-redux';
 
 import { TweetCard, UserImage } from '../styles/tweetStyles';
 import { Button } from '../styles/styledComponents';
 import styled from 'styled-components';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 
 /*****  Styling  *****/
@@ -44,11 +46,16 @@ const Controls = styled.div`
     justify-content: flex-end;
 `
 
+const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
 /****** Component ******/
 const Compose = ({ action, isReply, activeThread, addReply }) => {
     const [editorState, setEditorState] = useState('');
     const currentUser = useSelector(state => state.user.currentUser);
     const placeholder = action === 'tweet' ? "What's Happening?" : "Tweet your reply!";
+    const [snackOpen, setSnackOpen] = useState(false);
 
     const handleInputChange = (e) => {
         setEditorState(e.target.value);
@@ -62,6 +69,7 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
             const newTweet = await composeTweet(body);
             console.log('Tweet composed successfully!');
             setEditorState('');
+            setSnackOpen(true);
         } catch (error) {
             console.error('Error composing tweet:', error)
         }
@@ -78,9 +86,17 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
             console.log('reply composed sucessfully!');
             setEditorState('')
             addReply(newReply);
+            setSnackOpen(true);
         } catch (error) {
             console.error('Error composing reply:', error);
         }
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setSnackOpen(false);
     };
 
 
@@ -104,7 +120,11 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
                 </Button>
             </Controls>
         </ComposeBody>
-        
+        <Snackbar open={snackOpen} autoHideDuration={4000} onClose={handleClose} >
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Tweet Sent!
+          </Alert>  
+        </Snackbar>
     </TweetCard>
   )
 }
