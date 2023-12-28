@@ -56,6 +56,7 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
     const currentUser = useSelector(state => state.user.currentUser);
     const placeholder = action === 'tweet' ? "What's Happening?" : "Tweet your reply!";
     const [snackOpen, setSnackOpen] = useState(false);
+    const [alertType, setAlertType] = useState('success');
 
     const handleInputChange = (e) => {
         setEditorState(e.target.value);
@@ -69,9 +70,12 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
             const newTweet = await composeTweet(body);
             console.log('Tweet composed successfully!');
             setEditorState('');
+            setAlertType('success'); // Set alert type to success
             setSnackOpen(true);
         } catch (error) {
-            console.error('Error composing tweet:', error)
+            console.error('Error composing tweet:', error);
+            setAlertType('error'); // Set alert type to error
+            setSnackOpen(true);
         }
     };
 
@@ -83,12 +87,15 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
         }
         try {
             const newReply = await composeTweet(body);
-            console.log('reply composed sucessfully!');
-            setEditorState('')
+            console.log('Reply composed successfully!');
+            setEditorState('');
             addReply(newReply);
+            setAlertType('success'); // Set alert type to success
             setSnackOpen(true);
         } catch (error) {
             console.error('Error composing reply:', error);
+            setAlertType('error'); // Set alert type to error
+            setSnackOpen(true);
         }
     };
 
@@ -120,10 +127,16 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
                 </Button>
             </Controls>
         </ComposeBody>
-        <Snackbar open={snackOpen} autoHideDuration={4000} onClose={handleClose} >
-          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Tweet Sent!
-          </Alert>  
+        <Snackbar open={snackOpen} autoHideDuration={4000} onClose={handleClose}>
+          {alertType === 'success' ? (
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              Tweet Sent!
+            </Alert>
+          ) : (
+            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+              Tweet failed to send!
+            </Alert>  
+          )}
         </Snackbar>
     </TweetCard>
   )
