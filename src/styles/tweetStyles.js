@@ -158,7 +158,7 @@ export const MenuOptions = styled.div`
  top: 100%;
  right: 0;
  width: 6em;
- background-color: ${props => props.theme.colors.bgDark};
+ background-color: ${props => props.theme.colors.bgVeryDark};
  border: 1px solid ${props => props.theme.colors.secondary};
  padding: .3em;
  box-shadow: 0 .5em .7em rgba(0, 0, 0, 0.7);
