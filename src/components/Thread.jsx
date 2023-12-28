@@ -1,8 +1,9 @@
 import StandardTweet from './StandardTweet';
 import { useNavigate, useParams } from 'react-router-dom';
 import Compose from './Compose';
-import { useGetTweetThreadQuery } from '../api/tweets';
+import { useGetTweetThreadQuery, useGetRepliesToTweetQuery } from '../api/tweets';
 import TweetList from './TweetList';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 import { Header } from '../styles/styledComponents';
@@ -25,7 +26,31 @@ const StyledIcon = styled(FontAwesomeIcon)`
 const Thread = () => {
   const { threadId } = useParams();
   const { data: threadData, isLoading, isError, refetch } = useGetTweetThreadQuery(threadId);
+  const { data: paginatedReplies } = useGetRepliesToTweetQuery({ 
+    tweetId: threadId, 
+    limit: 75, 
+    skip: 0 
+  }, { skip: !threadData?.paginationRequired }); // Skip this query initially if pagination is not required
+  const [localReplies, setLocalReplies] = useState([]);
+  const [skip, setSkip] = useState(0); // for pagination control
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (threadData && !threadData.paginationRequired && threadData.replies) {
+      setLocalReplies(threadData.replies);
+    }
+  }, [threadData]);
+
+  useEffect(() => {
+    if (paginatedReplies) {
+      setLocalReplies(prevReplies => [...prevReplies, ...paginatedReplies]);
+    }
+  }, [paginatedReplies]);
+
+  const handleLoadMoreReplies = () => {
+    const newSkip = skip + 50;
+    setSkip(newSkip);
+  };
 
   const handleAddReply = () => {
     refetch();
@@ -43,9 +68,8 @@ const Thread = () => {
     return <p>Error loading thread.</p>;
   }
 
-  const { baseTweet, replies } = threadData;
+  const { baseTweet } = threadData;
   
-
   return (
     <>
         <Header>
@@ -78,8 +102,8 @@ const Thread = () => {
             addReply={handleAddReply} 
         />
 
-        {replies && replies.length > 0 && (
-            <TweetList tweets={replies} standardOnly />
+        {localReplies && localReplies.length > 0 && (
+            <TweetList tweets={localReplies} standardOnly />
         )}
     </>
   );
