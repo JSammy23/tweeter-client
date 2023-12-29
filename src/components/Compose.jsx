@@ -1,6 +1,7 @@
 import { useState, forwardRef } from 'react';
 import { composeTweet } from '../api/tweets';
 import { useSelector } from 'react-redux';
+import TextArea from './TextArea';
 
 import { TweetCard, UserImage } from '../styles/tweetStyles';
 import { Button } from '../styles/styledComponents';
@@ -16,20 +17,6 @@ const ImgDiv = styled.div`
  margin-right: .5em;
  display: flex;
  align-items: flex-start;
-`;
-
-const StyledTextArea = styled.textarea`
-    width: 100%;
-    padding: .3em .5em;
-    font-size: 1.3em;
-    font-family: 'Times New Roman', Times, serif;
-    border: none;
-    background-color: ${props => props.theme.colors.bgVeryDark};
-    color: #fff;
-    outline: none;
-    &::placeholder {
-        color: ${props => props.theme.colors.secondary};
-    }
 `;
 
 const ComposeBody = styled.div`
@@ -113,12 +100,8 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
             <UserImage src={currentUser?.profile.profile_picture} />
         </ImgDiv>
         <ComposeBody>
-            <StyledTextArea
-            maxLength='500'
-            placeholder={placeholder}
-            rows="5"
-            value={editorState}
-            onChange={handleInputChange} />
+            {/* TextArea */}
+            <TextArea placeholder={placeholder} editorState={editorState} handleInputChange={handleInputChange} />
             <Controls>
                 <Button 
                     onClick={isReply ? handleComposeReply : handleComposeTweet}
