@@ -5,7 +5,6 @@ import Retweet from './Retweet';
 import CommentsButton from './CommentsButton';
 import TweetHeader from './TweetHeader';
 
-import styled from 'styled-components';
 import { TweetCard, UserImage, TweetBody, TweetReactions, LeftThreadLine } from '../styles/tweetStyles';
 
 import MissingTweet from './MissingTweet';
@@ -55,6 +54,7 @@ const StandardTweet = ({ tweet, isMini }) => {
           const mention = encodeURIComponent(entity.value);
           jsxParts.push(<span 
             className="mention" 
+            key={entity._id}
             onClick={() => navigate(`/search?q=${mention}`)} >
             {entity.value}
           </span>);
@@ -62,6 +62,7 @@ const StandardTweet = ({ tweet, isMini }) => {
           const hashtag = encodeURIComponent(entity.value);
           jsxParts.push(<span 
             className="hashtag" 
+            key={entity._id}
             onClick={() => navigate(`/search?q=${hashtag}`)} >
             {entity.value}
           </span>);
