@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { checkUsernameAvailability, uploadProfilePicture } from '../../api';
+import ImageUpload from '../ImageUpload';
 
 import styled from 'styled-components';
 import { Button, Module } from '../../styles/styledComponents';
@@ -70,21 +71,53 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
         }
     };
 
-    const handleProfileImgChange = async (e) => {
-        const file = e.target.files[0];
-      
+    // This function will be passed to the ImageUpload component
+    const handleImageUpload = async (compressedFile) => {
         try {
-          const uploadedImg = await uploadProfilePicture(file, user._id);
-          setProfileImgURL(uploadedImg.fileUrl);
+            const uploadedImg = await uploadProfilePicture(compressedFile, user._id);
+            setProfileImgURL(uploadedImg.fileUrl);
         } catch (error) {
-          console.error('Error uploading profile image:', error);
+            console.error('Error uploading profile image:', error);
         }
     };
 
+    const imageUploadRef = useRef(null);
+
     const openFileInput = () => {
-        const fileInput = document.getElementById('profileImgInput');
-        fileInput.click();
+        imageUploadRef.current.openFilePicker();
     };
+
+    // const handleProfileImgChange = async (e) => {
+    //     const file = e.target.files[0];
+      
+    //     const compressorOptions = {
+    //         quality: 0.6,
+    //         convertSize: 5000000,
+    //         convertTypes: ['image/png', 'image/webp', 'image/jpeg'],
+    //         success(result) {
+    //             uploadImage(result);
+    //         },
+    //         error(err) {
+    //             console.error('Compression error:', err.message);
+    //         },
+    //     };
+    
+    //     new Compressor(file, compressorOptions);
+    // };
+
+    // const uploadImage = async (compressedFile) => {
+    //     try {
+    //         const uploadedImg = await uploadProfilePicture(compressedFile, user._id);
+    //         setProfileImgURL(uploadedImg.fileUrl);
+    //     } catch (error) {
+    //         console.error('Error uploading profile image:', error);
+    //     }
+    // };
+
+    // const openFileInput = () => {
+    //     const fileInput = document.getElementById('profileImgInput');
+    //     fileInput.click();
+    // };
 
     
 
@@ -102,13 +135,7 @@ const EditProfile = ({ toggleClose, user, onUpdateUser, updateUserProfileImg, se
             <div className="profile-img-cont">
                 <img onClick={openFileInput} className='profile-pic' src={profileImgURL} alt='profile pic' />
                 <div onClick={openFileInput} className="edit-label">Edit</div>
-                <input 
-                type="file"
-                id='profileImgInput'
-                accept='image/*'
-                onChange={handleProfileImgChange}
-                style={{ display: 'none' }}
-                 />
+                <ImageUpload ref={imageUploadRef} onUpload={handleImageUpload} />
             </div>
             <div className='float-label has-value' >
                 <input type="text" name='username' id='username' required  onChange={(e) => setLocalUsername(e.target.value)} onBlur={handleInputChange} onFocus={handleInputChange} value={localUsername}/>
