@@ -39,6 +39,14 @@ export const tweetsApi = createApi({
                 body: {action},
             }),
         }),
+        /****** Upload Tweet Image Attachments *****/
+        uploadTweetImages: builder.mutation({
+            query: (FormData) => ({
+                url: 'upload-image',
+                method: 'POST',
+                body: FormData,
+            })
+        })
     }),
 });
 
@@ -49,6 +57,7 @@ export const {
     useGetTweetThreadQuery,
     useGetUserTweetsAndLikesQuery,
     useGetRepliesToTweetQuery,
+    useUploadTweetImagesMutation,
 } = tweetsApi;
 
 
