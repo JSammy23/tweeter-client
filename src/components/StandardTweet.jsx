@@ -4,6 +4,7 @@ import LikeButton from './LikeButton';
 import Retweet from './Retweet';
 import CommentsButton from './CommentsButton';
 import TweetHeader from './TweetHeader';
+import TweetAttachments from './TweetAttachments';
 
 import { TweetCard, UserImage, TweetBody, TweetReactions, LeftThreadLine } from '../styles/tweetStyles';
 
@@ -14,6 +15,7 @@ import MissingTweet from './MissingTweet';
 const StandardTweet = ({ tweet, isMini }) => {
   const currentUser = useSelector(state => state.user.currentUser);
   const navigate = useNavigate();
+  const hasAttachments = tweet.attachments?.length > 0;
   
   const handleUserProfileClick = () => {
     navigate(`/profile/${tweet.author._id}`);
@@ -106,6 +108,9 @@ const StandardTweet = ({ tweet, isMini }) => {
             <TweetBody isMini={isMini} >
               <p>{formatTweetText(tweet)}</p>
             </TweetBody>
+            { hasAttachments ? (
+              <TweetAttachments attachments={tweet.attachments} />
+            ): null }
             <TweetReactions>
               <CommentsButton tweet={tweet} />
               <Retweet tweet={tweet} />
