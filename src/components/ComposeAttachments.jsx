@@ -15,7 +15,7 @@ const StyledIconButton = styled(IconButton)`
 `;
 
 
-const TweetAttachments = ({ onImagesSelected, selectedImages }) => {
+const ComposeAttachments = ({ onImagesSelected, selectedImages }) => {
 
     const openFileInput = () => {
         const fileInput = document.getElementById('imageAttachmentInput');
@@ -46,4 +46,4 @@ const TweetAttachments = ({ onImagesSelected, selectedImages }) => {
   )
 }
 
-export default TweetAttachments;
+export default ComposeAttachments;

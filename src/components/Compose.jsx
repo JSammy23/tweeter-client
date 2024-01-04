@@ -2,7 +2,7 @@ import { useState, forwardRef } from 'react';
 import { composeTweet, useUploadTweetImagesMutation } from '../api/tweets';
 import { useSelector } from 'react-redux';
 import TextArea from './TextArea';
-import TweetAttachments from './TweetAttachments';
+import ComposeAttachments from './ComposeAttachments';
 import ImagePreview from './ImagePreview';
 
 import { TweetCard, UserImage } from '../styles/tweetStyles';
@@ -33,6 +33,7 @@ const ComposeBody = styled.div`
 const Controls = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: end;
 `;
 
 const Alert = forwardRef(function Alert(props, ref) {
@@ -138,7 +139,7 @@ const Compose = ({ action, isReply, activeThread, addReply }) => {
             <TextArea placeholder={placeholder} editorState={editorState} handleInputChange={handleInputChange} />
             <Controls>
                 {/* Tweet Attachment Componet here */}
-                <TweetAttachments onImagesSelected={handleSelectedImages} selectedImages={selectedImages} />
+                <ComposeAttachments onImagesSelected={handleSelectedImages} selectedImages={selectedImages} />
                 <Button 
                     onClick={isReply ? handleComposeReply : handleComposeTweet}
                     disabled={editorState.trim().length < 2}>
