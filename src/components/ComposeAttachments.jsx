@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import IconButton from '@mui/material/IconButton';
 import ImageIcon from '@mui/icons-material/Image';
+import Compressor from 'compressorjs';
 
 import styled from 'styled-components';
 
@@ -23,10 +24,24 @@ const ComposeAttachments = ({ onImagesSelected, selectedImages }) => {
     };
 
     const handleFileChange = (event) => {
-        const files = event.target.files;
-        if (files) {
-            onImagesSelected([...Array.from(files)]);
-        }
+        const files = Array.from(event.target.files);
+        const compressedImages = [];
+
+        files.forEach(file => {
+            new Compressor(file, {
+                quality: 0.6,
+                success: (compressedResult) => {
+                    compressedImages.push(compressedResult);
+                    if (compressedImages.length === files.length) {
+                        // Call the callback function when all images are compressed
+                        onImagesSelected(compressedImages);
+                    }
+                },
+                error: (err) => {
+                    console.error('Compression error:', err.message);
+                },
+            });
+        });
     };
 
   return (
