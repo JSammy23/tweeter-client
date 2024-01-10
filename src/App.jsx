@@ -10,6 +10,8 @@ import ProfileContent from "./components/ProfileContent";
 import ExploreContent from "./components/ExploreContent";
 import NotificationContent from "./components/NotificationContent";
 import SearchContent from "./components/SearchContent";
+import MessageContent from "./components/MessageContent";
+import TestComp from './components/TestComp';
 
 function App() {
   
@@ -20,6 +22,8 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        {/* For Testing */}
+        <Route path="/test" element={<TestComp />} />
         <Route path="/*" element={<PrivateRoute>
           <FeedPage>
             <Routes>
@@ -29,6 +33,7 @@ function App() {
               <Route path="/profile/:userId/*" element={<ProfileContent />} />
               <Route path="/notifications" element={<NotificationContent />} />
               <Route path="/search" element={<SearchContent />} />
+              <Route path="/messages" element={<MessageContent />} />
             </Routes>
           </FeedPage>
         </PrivateRoute> } >
