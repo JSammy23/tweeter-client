@@ -6,6 +6,7 @@ import { faTwitter } from '@fortawesome/fontawesome-free-brands';
 import { faHome, faHashtag, faUser, faSearch, faBell } from '@fortawesome/fontawesome-free-solid';
 import { useSelector } from 'react-redux';
 import LogoutButton from './LogoutButton';
+import MessageIcon from '@mui/icons-material/Message';
 
 
 
@@ -106,13 +107,23 @@ const Sidebar = () => {
     const currentUser = useSelector(state => state.user.currentUser);
 
     const navItems = [
-        {id: 'home', icon: faHome, text: 'Home', route: '/home'},
-        {id: 'explore', icon: faHashtag, text: 'Explore', route: '/explore'},
-        {id: 'search', icon: faSearch, text: 'Search', route: '/search'},
-        {id: 'notifications', icon: faBell, text: 'Notifications', route: '/notifications'},
-        currentUser && {id: 'profile', icon: faUser, text: 'Profile', route: `/profile/${currentUser._id}`},
+        {id: 'home', icon: faHome, text: 'Home', route: '/home', iconType: 'fontawesome'},
+        {id: 'explore', icon: faHashtag, text: 'Explore', route: '/explore', iconType: 'fontawesome'},
+        {id: 'search', icon: faSearch, text: 'Search', route: '/search', iconType: 'fontawesome'},
+        {id: 'messages', icon: MessageIcon, text: 'Messages', route: '/messages', iconType: 'materialui'},
+        {id: 'notifications', icon: faBell, text: 'Notifications', route: '/notifications', iconType: 'fontawesome'},
+        currentUser && {id: 'profile', icon: faUser, text: 'Profile', route: `/profile/${currentUser._id}`, iconType: 'fontawesome'},
         
     ].filter(Boolean);
+
+    const renderIcon = (item) => {
+        if (item.iconType === 'fontawesome') {
+            return <FontAwesomeIcon icon={item.icon} />;
+        } else if (item.iconType === 'materialui') {
+            const IconComponent = item.icon;
+            return <IconComponent />;
+        }
+    };
 
   return (
     <Header>
@@ -125,7 +136,7 @@ const Sidebar = () => {
                             <StyledNavLink
                                 to={item.route}
                                 activeClassName='active'>
-                                    <FontAwesomeIcon icon={item.icon} />
+                                    {renderIcon(item)}
                                     <span>{item.text}</span>
                             </StyledNavLink>
                         </li>
