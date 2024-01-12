@@ -10,6 +10,10 @@ import TweetList from './TweetList';
 import styled from 'styled-components';
 import { Title, UserHandle, Button } from '../styles/styledComponents';
 import { Link, useRoutes } from 'react-router-dom';
+import MessageIcon from '@mui/icons-material/Message';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
 
 
 const ProfileCard = styled.div`
@@ -112,12 +116,23 @@ const UserProfile = ({ user, tweets }) => {
                 <div>
                     <UserImage src={userProfileImg} />
                 </div>
-                <div>
-                {isCurrentUser ? (
-                    <Button onClick={toggleEditProfile} >Edit profile</Button>
-                ) : (
-                    <FollowButton user={user?._id} />
-                )}
+                <div className='flex end' >
+                    <div>
+                        {!isCurrentUser ? (
+                            <Tooltip title='Message User' >
+                            <IconButton sx={{mt: 1}} color='primary' variant='outlined' aria-label='message user'>
+                                <MessageIcon  />
+                            </IconButton>
+                        </Tooltip>
+                        ) : null }
+                    </div>
+                    <div>
+                        {isCurrentUser ? (
+                            <Button onClick={toggleEditProfile} >Edit profile</Button>
+                        ) : (
+                            <FollowButton user={user?._id} />
+                        )}
+                    </div>
                 </div>
             </div>
             <div className="flex column">
