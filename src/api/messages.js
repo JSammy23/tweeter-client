@@ -16,9 +16,13 @@ export const messagesApi = createApi({
         getConversations: builder.query({
             query: ({ limit = 20, skip = 0 }) => `?limit=${limit}&skip=${skip}`,
         }),
+        getConversationsMesseges: builder.query({
+            query: ({ limit = 25, skip = 0, conversationId }) => `${conversationId}?limit=${limit}&skip=${skip}`
+        })
     })
 });
 
 export const {
-    useGetConversationsQuery
+    useGetConversationsQuery,
+    useGetConversationsMessegesQuery
 } = messagesApi;
