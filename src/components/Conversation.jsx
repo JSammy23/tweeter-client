@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetConversationsMessegesQuery } from '../api';
-import { MessageList, Input } from 'react-chat-elements';
+import { ChatFeed, Message } from 'react-chat-ui';
 import { useSelector } from 'react-redux';
-
-import "react-chat-elements/dist/main.css";
 
 
 const Conversation = () => {
@@ -30,19 +28,12 @@ const Conversation = () => {
         if (!data || !data.messages || data.messages.length === 0) {
             return [];
         }
-    
-        return data.messages.map(message => {
-            // Find the sender in the participants array
-            const sender = data.participants.find(participant => participant._id === message.senderId);
-    
-            return {
-                position: message.senderId === currentUser._id ? 'right' : 'left',
-                type: 'text',
-                text: message.text,
-                dateString: new Date(message.date).toLocaleString(),
-                title: sender ? sender.username : "Unknown", // Use the sender's username, or "Unknown" if not found
-            };
-        });
+
+        return data.messages.map(message => new Message({
+            id: message.senderId === currentUser._id ? 0 : 1,
+            message: message.text,
+            senderName: data.participants.find(p => p._id === message.senderId)?.username || "Unknown",
+        }));
     };
     
     if (isLoading) {
@@ -53,11 +44,22 @@ const Conversation = () => {
         return <div>Error loading messages.</div>;
     }
     
-    
 
   return (
     <div>
-        <MessageList className='message-list' dataSource={prepareMessages()} />
+        <ChatFeed messages={prepareMessages()} showSenderName 
+        bubbleStyles={{
+            text: {
+              fontSize: 16,
+            },
+            chatbubble: {
+              borderRadius: 15,
+              padding: 10,
+              marginTop: 2,
+              marginLeft: 5,
+              marginRight: 5,
+            },
+        }} />
     </div>
   )
 }
