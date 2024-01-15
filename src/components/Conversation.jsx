@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetConversationsMessegesQuery } from '../api';
-import { ChatFeed, Message } from 'react-chat-ui';
 import { useSelector } from 'react-redux';
+import ChatList from './ChatList';
 
 
 const Conversation = () => {
@@ -29,11 +29,14 @@ const Conversation = () => {
             return [];
         }
 
-        return data.messages.map(message => new Message({
-            id: message.senderId === currentUser._id ? 0 : 1,
-            message: message.text,
-            senderName: data.participants.find(p => p._id === message.senderId)?.username || "Unknown",
-        }));
+        return data.messages.map(message => {
+            const sender = data.participants.find(p => p._id === message.senderId);
+            return {
+                ...message,
+                sender: sender,
+                position: message.senderId === currentUser._id ? 'right' : 'left'
+            };
+        });
     };
     
     if (isLoading) {
@@ -47,19 +50,7 @@ const Conversation = () => {
 
   return (
     <div>
-        <ChatFeed messages={prepareMessages()} showSenderName 
-        bubbleStyles={{
-            text: {
-              fontSize: 16,
-            },
-            chatbubble: {
-              borderRadius: 15,
-              padding: 10,
-              marginTop: 2,
-              marginLeft: 5,
-              marginRight: 5,
-            },
-        }} />
+        <ChatList messages={prepareMessages()} />
     </div>
   )
 }
