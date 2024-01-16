@@ -3,6 +3,31 @@ import { useParams } from 'react-router-dom';
 import { useGetConversationsMessegesQuery } from '../api';
 import { useSelector } from 'react-redux';
 import ChatList from './ChatList';
+import TextField from '@mui/material/TextField';
+
+import styled from 'styled-components';
+
+const StyledTextField = styled(TextField)`
+  width: 100%;
+`;
+
+const ChatContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const ChatListStyle = styled.div`
+  flex-grow: 1;
+  overflow-y: auto;
+`;
+
+const InputContainer = styled.div`
+  align-self: center;
+  padding: 10px;
+  width: 85%; // Or any other width you prefer
+`;
+
 
 
 const Conversation = () => {
@@ -48,11 +73,21 @@ const Conversation = () => {
     }
     
 
-  return (
-    <div>
-        <ChatList messages={prepareMessages()} />
-    </div>
-  )
+    return (
+        <ChatContainer>
+          <ChatListStyle>
+            <ChatList messages={prepareMessages()} />
+          </ChatListStyle>
+          <InputContainer>
+            <StyledTextField
+              multiline
+              maxRows={5}
+              variant='outlined'
+              placeholder='Type a message...'
+            />
+          </InputContainer>
+        </ChatContainer>
+      );
 }
 
 export default Conversation;
