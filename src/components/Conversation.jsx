@@ -86,12 +86,15 @@ const Conversation = () => {
             return [];
         }
 
-        return data.messages.map(message => {
+        return data.messages.map((message, index) => {
             const sender = data.participants.find(p => p._id === message.senderId);
+            const showUsername = (index === 0 || data.messages[index - 1].senderId !== message.senderId) && message.senderId !== currentUser._id;
+        
             return {
                 ...message,
                 sender: sender,
-                position: message.senderId === currentUser._id ? 'right' : 'left'
+                position: message.senderId === currentUser._id ? 'right' : 'left',
+                showUsername: showUsername
             };
         });
     };

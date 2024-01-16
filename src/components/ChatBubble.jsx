@@ -13,7 +13,7 @@ const TextBubble = styled.div`
 const ChatBubble = ({ message }) => {
   return (
     <div style={{ alignSelf: message.position === 'right' ? 'flex-end' : 'flex-start' }} >
-        <div>{message.sender.username}</div>
+        {message.showUsername && <div>{message.sender.username}</div>}
         <Tooltip title={message.date} >
             <TextBubble position={message.position} >{message.text}</TextBubble>
         </Tooltip>
