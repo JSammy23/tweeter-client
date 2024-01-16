@@ -1,4 +1,5 @@
 import Tooltip from '@mui/material/Tooltip';
+import { format, isToday } from 'date-fns';
 
 import styled from "styled-components"
 
@@ -11,10 +12,24 @@ const TextBubble = styled.div`
 `
 
 const ChatBubble = ({ message }) => {
+
+  const formatMessageDate = (date) => {
+    const messageDate = typeof date === 'string' ? new Date(date) : date;
+  
+    if (isToday(messageDate)) {
+      return format(messageDate, 'h:mm bbb');
+    } else {
+      // If the message was sent on a different day, return the full date and time
+      return format(messageDate, "h:mm bbb MM/dd/yyyy");
+    }
+  };
+
+  const formattedDate = formatMessageDate(message.date);
+
   return (
     <div style={{ alignSelf: message.position === 'right' ? 'flex-end' : 'flex-start' }} >
         {message.showUsername && <div>{message.sender.username}</div>}
-        <Tooltip title={message.date} >
+        <Tooltip title={formattedDate} >
             <TextBubble position={message.position} >{message.text}</TextBubble>
         </Tooltip>
     </div>
