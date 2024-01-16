@@ -18,11 +18,18 @@ export const messagesApi = createApi({
         }),
         getConversationsMesseges: builder.query({
             query: ({ limit = 25, skip = 0, conversationId }) => `${conversationId}?limit=${limit}&skip=${skip}`
-        })
+        }),
+        createMessage: builder.mutation({
+            query: (messageData) => ({
+                method: 'POST',
+                body: messageData,
+            }),
+        }),
     })
 });
 
 export const {
     useGetConversationsQuery,
-    useGetConversationsMessegesQuery
+    useGetConversationsMessegesQuery,
+    useCreateMessageMutation
 } = messagesApi;
