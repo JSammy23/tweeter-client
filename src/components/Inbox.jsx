@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { format, isToday } from 'date-fns';
 
 import styled from "styled-components";
 import Typography from '@mui/material/Typography';
@@ -7,6 +8,7 @@ import { TweetDate } from '../styles/tweetStyles';
 
 const ConversationDiv = styled.div`
     display: flex;
+    justify-content: space-between;
     width: 100%;
     border-bottom: 1px solid ${props => props.theme.colors.secondary};
     padding: .5em;
@@ -25,6 +27,16 @@ const Inbox = ({ conversations }) => {
         navigate(`/messages/${conversationId}`);
     };
 
+    const formatMessageDate = (date) => {
+        const lastMessageDate = typeof date === 'string' ? new Date(date) : date;
+      
+        if (isToday(lastMessageDate)) {
+          return format(lastMessageDate, 'h:mm bbb');
+        } else {
+          return format(lastMessageDate, "h:mm bbb MM/dd/yyyy");
+        }
+    };
+
     const renderConversations = () => {
         if (conversations && conversations.length > 0) {
             return conversations.map((conversation) => {
@@ -37,7 +49,7 @@ const Inbox = ({ conversations }) => {
                             {participantNames}
                         </Typography>
                         <TweetDate>
-                            {conversation.lastMessageDate ? conversation.lastMessageDate : null}
+                            {conversation.lastMessageDate ? formatMessageDate(conversation.lastMessageDate) : null}
                         </TweetDate>
                     </ConversationDiv>
                 );
