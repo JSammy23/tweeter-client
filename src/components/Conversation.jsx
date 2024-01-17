@@ -4,8 +4,13 @@ import { useGetConversationsMessegesQuery, useCreateMessageMutation } from '../a
 import { useSelector } from 'react-redux';
 import ChatList from './ChatList';
 import TextField from '@mui/material/TextField';
+import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { Header } from '../styles/styledComponents';
+import Typography from '@mui/material/Typography';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/fontawesome-free-solid';
 
 /************ Styling ****************/
 
@@ -22,6 +27,7 @@ const ChatContainer = styled.div`
 const ChatListStyle = styled.div`
   flex-grow: 1;
   overflow-y: auto;
+  margin-top: .3em;
 `;
 
 const InputContainer = styled.div`
@@ -34,6 +40,17 @@ const InputContainer = styled.div`
   }
 `;
 
+const StyledIcon = styled(FontAwesomeIcon)`
+ cursor: pointer;
+ color: inherit;
+ font-size: 1.4em;
+ margin: .3em 0;
+
+ &:hover {
+  color: ${props => props.theme.colors.primary};
+ }
+`;
+
 /************ Component ****************/
 
 const Conversation = () => {
@@ -43,6 +60,7 @@ const Conversation = () => {
     const [createMessage, { isLoading: isCreatingMessage }] = useCreateMessageMutation();
     const { data, isLoading, isError, refetch } = useGetConversationsMessegesQuery({ limit: 25, skip: skip, conversationId });
     const currentUser = useSelector(state => state.user.currentUser);
+    const navigate = useNavigate();
 
 
     const handleLoadMore = () => {
@@ -74,6 +92,10 @@ const Conversation = () => {
         }
     };
 
+    const handleBackClick = () => {
+        navigate(-1);
+    };
+
     // Log the messages for debugging purposes
     useEffect(() => {
         if (data) {
@@ -98,6 +120,10 @@ const Conversation = () => {
             };
         });
     };
+
+    const participantNames = data.participants
+        .filter(participant => participant._id !== currentUser._id)
+    .map(participant => participant.username).join(', ');
     
     if (isLoading) {
         return <div>Loading...</div>;
@@ -110,6 +136,14 @@ const Conversation = () => {
 
     return (
         <ChatContainer>
+          <Header>
+            <div>
+              <Typography variant="h5">
+                {participantNames}
+              </Typography>
+              <StyledIcon icon={faArrowLeft} onClick={handleBackClick} />
+            </div>
+          </Header>  
           <ChatListStyle>
             <ChatList messages={prepareMessages()} />
           </ChatListStyle>
