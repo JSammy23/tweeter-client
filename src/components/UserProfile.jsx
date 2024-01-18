@@ -14,7 +14,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
-
+/******** Styling ***********/
 
 const ProfileCard = styled.div`
  width: 100%;
@@ -64,6 +64,7 @@ const StyledLink = styled(Link)`
  }
 `;
 
+/******** Component ***********/
 
 const UserProfile = ({ user, tweets }) => {
 
@@ -148,6 +149,9 @@ const UserProfile = ({ user, tweets }) => {
                 </CountsDiv>
                 <UserProfileControls userUid={user._id} />
             </div>
+
+            {/* Edit Profile Module */}
+
             {editProfile && (
             <EditProfile onUpdateUser={handleUpdateUser} 
             toggleClose={toggleEditProfile}
@@ -160,6 +164,7 @@ const UserProfile = ({ user, tweets }) => {
             setLocalLastName={setLocalLastName}
             updateUserProfileImg={setUserProfileImg} />)}
         </ProfileCard>
+
         <TweetList tweets={tweets} />
     </>
   );
