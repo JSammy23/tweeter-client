@@ -104,7 +104,7 @@ const Conversation = () => {
     }, [data]);
 
     const prepareMessages = () => {
-        if (!data || !data.messages || data.messages.length === 0) {
+        if (!data || !data.messages || !data.participants || data.messages.length === 0) {
             return [];
         }
 
@@ -121,7 +121,7 @@ const Conversation = () => {
         });
     };
 
-    const participantNames = data.participants
+    const participantNames = data?.participants
         .filter(participant => participant._id !== currentUser._id)
     .map(participant => participant.username).join(', ');
     
@@ -138,9 +138,11 @@ const Conversation = () => {
         <ChatContainer>
           <Header>
             <div>
-              <Typography variant="h5">
-                {participantNames}
-              </Typography>
+              {data?.participants && (
+                <Typography variant="h5">
+                    {participantNames}
+                </Typography>
+              )}
               <StyledIcon icon={faArrowLeft} onClick={handleBackClick} />
             </div>
           </Header>  
