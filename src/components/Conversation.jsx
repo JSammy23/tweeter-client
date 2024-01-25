@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetConversationsMessegesQuery, useCreateMessageMutation } from '../api';
+import { useGetConversationsMessagesQuery, useCreateMessageMutation } from '../api';
 import { useSelector } from 'react-redux';
 import ChatList from './ChatList';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
 
 import styled from 'styled-components';
 import { Header } from '../styles/styledComponents';
@@ -58,10 +59,29 @@ const Conversation = () => {
     const { conversationId } = useParams();
     const [messageText, setMessageText] = useState('');
     const [createMessage, { isLoading: isCreatingMessage }] = useCreateMessageMutation();
-    const { data, isLoading, isError, refetch } = useGetConversationsMessegesQuery({ limit: 25, skip: skip, conversationId });
+    const { data, isLoading, isError, refetch } = useGetConversationsMessagesQuery({ limit: 25, skip: skip, conversationId });
+    const [localMessages, setLocalMessages] = useState([]);
     const currentUser = useSelector(state => state.user.currentUser);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const socket = io('http://localhost:3000');
+    
+        // Join the room for the current conversation
+        socket.emit('joinConversation', conversationId);
+    
+        // Listen for new messages in this conversation
+        socket.on('newMessage', (newMessage) => {
+            setLocalMessages(prevMessages => [...prevMessages, newMessage]);
+        });
+    
+        // Cleanup
+        return () => {
+            socket.emit('leaveConversation', conversationId);
+            socket.off('newMessage');
+            socket.close();
+        };
+    }, [conversationId, skip]);
 
     const handleLoadMore = () => {
         const newSkip = skip + 25;
@@ -79,7 +99,7 @@ const Conversation = () => {
             }).unwrap();
     
             setMessageText('');
-            refetch();
+            // refetch();
         } catch (error) {
             console.error('Failed to send message:', error);
         }
@@ -104,13 +124,17 @@ const Conversation = () => {
     }, [data]);
 
     const prepareMessages = () => {
-        if (!data || !data.messages || !data.participants || data.messages.length === 0) {
+        // Combine RTK Query data with local messages
+        const combinedMessages = data ? [...data.messages, ...localMessages] : localMessages;
+    
+        // Check if there are no messages
+        if (combinedMessages.length === 0) {
             return [];
         }
-
-        return data.messages.map((message, index) => {
+    
+        return combinedMessages.map((message, index, allMessages) => {
             const sender = data.participants.find(p => p._id === message.senderId);
-            const showUsername = (index === 0 || data.messages[index - 1].senderId !== message.senderId) && message.senderId !== currentUser._id;
+            const showUsername = (index === 0 || allMessages[index - 1].senderId !== message.senderId) && message.senderId !== currentUser._id;
         
             return {
                 ...message,
@@ -120,6 +144,24 @@ const Conversation = () => {
             };
         });
     };
+
+    // const prepareMessages = () => {
+    //     if (!data || !data.messages || !data.participants || data.messages.length === 0) {
+    //         return [];
+    //     }
+
+    //     return data.messages.map((message, index) => {
+    //         const sender = data.participants.find(p => p._id === message.senderId);
+    //         const showUsername = (index === 0 || data.messages[index - 1].senderId !== message.senderId) && message.senderId !== currentUser._id;
+        
+    //         return {
+    //             ...message,
+    //             sender: sender,
+    //             position: message.senderId === currentUser._id ? 'right' : 'left',
+    //             showUsername: showUsername
+    //         };
+    //     });
+    // };
 
     const participantNames = data?.participants
         .filter(participant => participant._id !== currentUser._id)
