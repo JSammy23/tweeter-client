@@ -131,6 +131,9 @@ const Conversation = () => {
         if (combinedMessages.length === 0) {
             return [];
         }
+
+        // Sort messages by date in ascending order (oldest to newest)
+        combinedMessages.sort((a, b) => new Date(a.date) - new Date(b.date));
     
         return combinedMessages.map((message, index, allMessages) => {
             const sender = data.participants.find(p => p._id === message.senderId);
@@ -144,24 +147,6 @@ const Conversation = () => {
             };
         });
     };
-
-    // const prepareMessages = () => {
-    //     if (!data || !data.messages || !data.participants || data.messages.length === 0) {
-    //         return [];
-    //     }
-
-    //     return data.messages.map((message, index) => {
-    //         const sender = data.participants.find(p => p._id === message.senderId);
-    //         const showUsername = (index === 0 || data.messages[index - 1].senderId !== message.senderId) && message.senderId !== currentUser._id;
-        
-    //         return {
-    //             ...message,
-    //             sender: sender,
-    //             position: message.senderId === currentUser._id ? 'right' : 'left',
-    //             showUsername: showUsername
-    //         };
-    //     });
-    // };
 
     const participantNames = data?.participants
         .filter(participant => participant._id !== currentUser._id)
