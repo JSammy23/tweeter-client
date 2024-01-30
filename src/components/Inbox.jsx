@@ -6,6 +6,8 @@ import styled from "styled-components";
 import Typography from '@mui/material/Typography';
 import { TweetDate } from '../styles/tweetStyles';
 import { Header, Title } from '../styles/styledComponents';
+import LaunchIcon from '@mui/icons-material/Launch';
+import IconButton from '@mui/material/IconButton';
 
 const ConversationDiv = styled.div`
     display: flex;
@@ -18,6 +20,11 @@ const ConversationDiv = styled.div`
         color: ${props => props.theme.colors.accent};
         cursor: pointer;
     }
+`;
+
+const StyledIconButton = styled(LaunchIcon)`
+    color: ${(props) => props.theme.colors.accent};
+
 `
 
 const Inbox = ({ conversations }) => {
@@ -65,6 +72,11 @@ const Inbox = ({ conversations }) => {
         <Header>
             <div className="flex spacer">
                 <Title>Inbox</Title>
+                <div>
+                    <IconButton>
+                        <StyledIconButton />
+                    </IconButton>
+                </div>
             </div>
         </Header>
         <div>
