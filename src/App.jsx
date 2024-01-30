@@ -11,7 +11,6 @@ import ExploreContent from "./components/ExploreContent";
 import NotificationContent from "./components/NotificationContent";
 import SearchContent from "./components/SearchContent";
 import MessageContent from "./components/MessageContent";
-import Conversation from "./components/Conversation";
 import TestComp from './components/TestComp';
 
 function App() {
@@ -34,8 +33,7 @@ function App() {
               <Route path="/profile/:userId/*" element={<ProfileContent />} />
               <Route path="/notifications" element={<NotificationContent />} />
               <Route path="/search" element={<SearchContent />} />
-              <Route path="/messages/:conversationId" element={<Conversation />} />
-              <Route exact path="/messages" element={<MessageContent />} />
+              <Route exact path="/messages/*" element={<MessageContent />} />
             </Routes>
           </FeedPage>
         </PrivateRoute> } >

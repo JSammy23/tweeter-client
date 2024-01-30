@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useGetConversationsQuery } from '../api/messages';
+import { Routes, Route, useParams } from "react-router-dom";
 import Inbox from './Inbox';
+import Conversation from './Conversation';
 
-import { Header, Title } from '../styles/styledComponents';
 
 const MessageContent = () => {
     const [skip, setSkip] = useState(0);
@@ -28,12 +29,10 @@ const MessageContent = () => {
 
   return (
     <>
-        <Header>
-            <div className="flex spacer">
-                <Title>Inbox</Title>
-            </div>
-        </Header>
-        <Inbox conversations={conversations} />
+        <Routes>
+            <Route path='/' element={<Inbox conversations={conversations} />} />
+            <Route path="/:conversationId" element={<Conversation />} />
+        </Routes>
     </>
   )
 }
