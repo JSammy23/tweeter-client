@@ -5,6 +5,7 @@ import { format, isToday } from 'date-fns';
 import styled from "styled-components";
 import Typography from '@mui/material/Typography';
 import { TweetDate } from '../styles/tweetStyles';
+import { Header, Title } from '../styles/styledComponents';
 
 const ConversationDiv = styled.div`
     display: flex;
@@ -61,7 +62,14 @@ const Inbox = ({ conversations }) => {
 
   return (
     <div>
-        {renderConversations()}
+        <Header>
+            <div className="flex spacer">
+                <Title>Inbox</Title>
+            </div>
+        </Header>
+        <div>
+            {renderConversations()}
+        </div>
     </div>
   )
 }
