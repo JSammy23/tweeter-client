@@ -46,7 +46,7 @@ const ComposeAttachments = ({ onImagesSelected, selectedImages }) => {
 
   return (
     <div>
-        <StyledIconButton onClick={openFileInput} >
+        <StyledIconButton onClick={openFileInput} aria-label="Attach image" >
             <ImageIcon />
         </StyledIconButton>
         <input
