@@ -1,5 +1,4 @@
-import { useContext, useState } from 'react';
-
+import { useState } from 'react';
 import Loading from './Loading/Loading';
 
 import styled from 'styled-components';
@@ -23,8 +22,6 @@ const LogoutButton = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     
-    
-
     const cleanupDeletedTweets = async () => {
         // Delete tweets that are soft deleted?
     };
@@ -42,12 +39,12 @@ const LogoutButton = () => {
       {isLoading ? (
         <Loading />
       ) : ( 
-      <StyledIcon 
-        icon={faSignOutAlt} 
-        onClick={handleLogout}/>
+        <button onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '.5em' }} aria-label='Logout' >
+          <StyledIcon icon={faSignOutAlt} />
+        </button>
       )}
     </>
   )
 }
 
-export default LogoutButton
+export default LogoutButton;
