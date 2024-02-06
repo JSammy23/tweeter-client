@@ -117,7 +117,7 @@ const Sidebar = () => {
   return (
     <Header>
         <NavContainer>
-            <Logo><FontAwesomeIcon icon={faTwitter} /></Logo>
+            <Logo><FontAwesomeIcon icon={faTwitter} aria-hidden="true" /></Logo>
             <Nav>
                 <ul>
                     {navItems.map((item) => (
@@ -125,7 +125,7 @@ const Sidebar = () => {
                             <StyledNavLink
                                 to={item.route}
                                 activeClassName='active'>
-                                    <FontAwesomeIcon icon={item.icon} />
+                                    <FontAwesomeIcon icon={item.icon} aria-hidden="true" />
                                     <span>{item.text}</span>
                             </StyledNavLink>
                         </li>
