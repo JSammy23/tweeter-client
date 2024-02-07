@@ -3,6 +3,7 @@ import { useGetConversationsQuery } from '../api/messages';
 import { Routes, Route, useParams } from "react-router-dom";
 import Inbox from './Inbox';
 import Conversation from './Conversation';
+import NewMessage from './NewMessage';
 
 
 const MessageContent = () => {
@@ -32,6 +33,7 @@ const MessageContent = () => {
         <Routes>
             <Route path='/' element={<Inbox conversations={conversations} />} />
             <Route path="/:conversationId" element={<Conversation />} />
+            <Route path="/compose" element={<NewMessage />} />
         </Routes>
     </>
   )

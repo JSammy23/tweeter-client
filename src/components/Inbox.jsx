@@ -35,6 +35,10 @@ const Inbox = ({ conversations }) => {
         navigate(`/messages/${conversationId}`);
     };
 
+    const handleNewMessageClick = () => {
+        navigate('/messages/compose');
+    };
+
     const formatMessageDate = (date) => {
         const lastMessageDate = typeof date === 'string' ? new Date(date) : date;
       
@@ -70,10 +74,10 @@ const Inbox = ({ conversations }) => {
   return (
     <div>
         <Header>
-            <div className="flex spacer">
+            <div className="flex spacer align">
                 <Title>Inbox</Title>
                 <div>
-                    <IconButton>
+                    <IconButton onClick={handleNewMessageClick}>
                         <StyledIconButton />
                     </IconButton>
                 </div>
