@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { fetchSearchResults } from '../api';
 import StandardTweet from './StandardTweet';
 
-const SearchInput = styled.input`
+export const SearchInput = styled.input`
   width: 95%; // Adjust width as needed
   padding: 10px; 
   margin-bottom: 10px;
