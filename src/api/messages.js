@@ -25,11 +25,19 @@ export const messagesApi = createApi({
                 body: messageData,
             }),
         }),
+        createConversation: builder.mutation({
+            query: (participantIds) => ({
+                url: 'conversation',
+                method: 'POST',
+                body: participantIds,
+            }),
+        }),
     })
 });
 
 export const {
     useGetConversationsQuery,
     useGetConversationsMessagesQuery,
-    useCreateMessageMutation
+    useCreateMessageMutation,
+    useCreateConversationMutation,
 } = messagesApi;
