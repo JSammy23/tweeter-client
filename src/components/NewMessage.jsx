@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import RecipientChips from './RecipientChips';
+import { useCreateConversationMutation } from '../api';
 
 import { Title, Header, Button } from '../styles/styledComponents';
 import { SearchInput } from './SearchContent';
@@ -9,8 +10,10 @@ import { SearchInput } from './SearchContent';
 
 const NewMessage = () => {
     const [recipients, setRecipients] = useState([]);
-
+    const [ createConversation ] = useCreateConversationMutation();
     const location = useLocation();
+    const navigate = useNavigate();
+    const isDisabled = recipients.length > 0;
     
     useEffect(() => {
         const forwardedRecipientId = location.state?.recipientId;
@@ -24,12 +27,26 @@ const NewMessage = () => {
         setRecipients(recipients.filter(recipient => recipient.id !== id));
     };
 
+    const handleNextClick = async () => {
+        const participantIds = recipients.map(recipient => recipient._id);
+        try {
+            const response = await createConversation({participantIds}).unwrap();
+            navigate(`/messages/${response._id}`);
+        } catch (error) {
+            console.error('Failed to create conversation:', error);
+        }
+    };
+
   return (
     <div className='flex column align'>
         <Header>
             <div className="flex spacer align">
                 <Title>New message</Title>
-                <Button>Next</Button>
+                <Button 
+                 onClick={handleNextClick}
+                 disabled={!isDisabled}>
+                    Next
+                </Button>
             </div>
         </Header>
         <SearchInput
