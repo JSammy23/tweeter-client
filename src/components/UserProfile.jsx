@@ -4,7 +4,7 @@ import FollowButton from './FollowButton';
 import { updateUser } from '../api';
 import UserProfileControls from './UserProfileControls';
 import { useSelector } from 'react-redux';
-import { useGetUserTweetsAndLikesQuery } from '../api';
+import { useNavigate } from 'react-router-dom';
 import TweetList from './TweetList';
 
 import styled from 'styled-components';
@@ -75,6 +75,7 @@ const UserProfile = ({ user, tweets }) => {
     const [localLastName, setLocalLastName] = useState('');
     const [userProfileImg, setUserProfileImg] = useState('');
     const currentUser = useSelector(state => state.user.currentUser);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (currentUser?._id === user?._id) {
@@ -106,6 +107,15 @@ const UserProfile = ({ user, tweets }) => {
         setEditProfile(false);
     };
 
+    const handleMessageButtonClick = () => {
+        const simplifiedUser = {
+            _id: user._id,
+            username: user.username,
+            profile_picture: user.profile.profile_picture
+        };
+        navigate('/messages/compose', { state: { recipientId: simplifiedUser } });
+    };
+
     if (!user) {
         return null;
     }
@@ -119,13 +129,18 @@ const UserProfile = ({ user, tweets }) => {
                 </div>
                 <div className='flex end' >
                     <div>
-                        {!isCurrentUser ? (
+                        {!isCurrentUser && (
                             <Tooltip title='Message User' >
-                            <IconButton sx={{mt: 1}} color='primary' variant='outlined' aria-label='message user'>
-                                <MessageIcon  />
-                            </IconButton>
-                        </Tooltip>
-                        ) : null }
+                                <IconButton 
+                                 sx={{mt: 1}}
+                                 color='primary' 
+                                 variant='outlined' 
+                                 aria-label='message user'
+                                 onClick={handleMessageButtonClick}>
+                                    <MessageIcon  />
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     </div>
                     <div>
                         {isCurrentUser ? (
