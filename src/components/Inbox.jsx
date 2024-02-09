@@ -1,13 +1,17 @@
+import { useState } from 'react'; 
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { format, isToday } from 'date-fns';
 
 import styled from "styled-components";
 import Typography from '@mui/material/Typography';
-import { TweetDate } from '../styles/tweetStyles';
+import { TweetDate, MenuContainer, StyledIcon } from '../styles/tweetStyles';
 import { Header, Title } from '../styles/styledComponents';
 import LaunchIcon from '@mui/icons-material/Launch';
 import IconButton from '@mui/material/IconButton';
+import { faEllipsisH } from '@fortawesome/fontawesome-free-solid';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const ConversationDiv = styled.div`
     display: flex;
@@ -27,8 +31,19 @@ const StyledIconButton = styled(LaunchIcon)`
 
 `
 
+const FlexContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: end; // Ensures vertical alignment is centered
+    justify-content: flex-end; // Aligns items to the right
+    width: 100%; // Ensures it takes the full width to push items to the end
+`;
+
+
 const Inbox = ({ conversations }) => {
     const currentUser = useSelector(state => state.user.currentUser);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isConversationMenuOpen = Boolean(anchorEl);
     const navigate = useNavigate();
 
     const handleConversationClick = (conversationId) => {
@@ -37,6 +52,19 @@ const Inbox = ({ conversations }) => {
 
     const handleNewMessageClick = () => {
         navigate('/messages/compose');
+    };
+
+    const toggleConversationMenu = (event) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget);
+    };
+    
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    const handleDeleteConversation = (event) => {
+        event.stopPropagation();
+        console.log('Deleted Convo');
     };
 
     const formatMessageDate = (date) => {
@@ -57,12 +85,27 @@ const Inbox = ({ conversations }) => {
                     .map(participant => participant.username).join(', ');
                 return (
                     <ConversationDiv key={conversation._id} onClick={() => handleConversationClick(conversation._id)}  >
-                        <Typography variant="h5">
-                            {participantNames}
-                        </Typography>
-                        <TweetDate>
-                            {conversation.lastMessageDate ? formatMessageDate(conversation.lastMessageDate) : null}
-                        </TweetDate>
+                        <div>
+                            <Typography variant="h5">
+                                {participantNames}
+                            </Typography>
+                        </div>
+                        <FlexContainer>
+                            <StyledIcon icon={faEllipsisH} onClick={(event) => {
+                                event.stopPropagation();
+                                toggleConversationMenu(event);
+                            }} />
+                                <Menu
+                                 id='conversation-menu'
+                                 anchorEl={anchorEl}
+                                 open={isConversationMenuOpen}
+                                 onClose={handleClose} >
+                                    <MenuItem onClick={(event) => handleDeleteConversation(event)} >Delete Conversation</MenuItem>
+                                </Menu>
+                            <TweetDate>
+                                {conversation.lastMessageDate ? formatMessageDate(conversation.lastMessageDate) : null}
+                            </TweetDate>
+                        </FlexContainer>
                     </ConversationDiv>
                 );
             });
