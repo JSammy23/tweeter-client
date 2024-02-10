@@ -7,8 +7,9 @@ const TextBubble = styled.div`
     background-color: ${props => props.position === 'right' ? props.theme.colors.primary : props.theme.colors.secondary};
     color: ${props => props.position === 'right' ? '#fff' : props.theme.colors.bgLight};
     margin: .3em .5em;
-    padding: .4em;
+    padding: .4em .7em;
     border-radius: 10em;
+    font-size: 1.1em;
 `
 
 const ChatBubble = ({ message }) => {
