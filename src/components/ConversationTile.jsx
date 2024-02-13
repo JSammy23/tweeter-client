@@ -30,6 +30,15 @@ const FlexContainer = styled.div`
     width: 100%; 
 `;
 
+const NewBadge = styled.div`
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background-color: ${props => props.theme.colors.primary};
+    margin-right: .3em;
+    box-shadow: 0 0 6px ${props => props.theme.colors.primary};
+`;
+
 const ConversationTile = ({ conversation }) => {
     const currentUser = useSelector(state => state.user.currentUser);
     const navigate = useNavigate();
@@ -71,7 +80,10 @@ const ConversationTile = ({ conversation }) => {
 
   return (
     <ConversationDiv onClick={handleConversationClick}>
-        <div>
+        <div className='flex align' >
+            {conversation.unseenMessages && (
+                <NewBadge />
+            )}
             <Typography variant="h5">
                 {participantNames}
             </Typography>
