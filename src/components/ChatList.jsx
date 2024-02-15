@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import ChatBubble from "./ChatBubble";
+import Button from '@mui/material/Button';
 
 import styled from "styled-components";
 
@@ -10,7 +11,7 @@ const ChatContainer = styled.div`
   overflow-y: auto;
 `;
 
-const ChatList = ({ messages }) => {
+const ChatList = ({ messages, loadMore }) => {
     const bottomRef = useRef(null);
 
     useEffect(() => {
@@ -24,6 +25,7 @@ const ChatList = ({ messages }) => {
 
   return (
     <ChatContainer>
+      {/* <Button variant="contained" onClick={loadMore} >Load More</Button> */}
         {messages.map((message, index) => (
             <ChatBubble key={index} message={message}  />
         ))}

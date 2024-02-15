@@ -116,7 +116,6 @@ const Conversation = () => {
             }).unwrap();
     
             setMessageText('');
-            // refetch();
         } catch (error) {
             console.error('Failed to send message:', error);
         }
@@ -191,7 +190,7 @@ const Conversation = () => {
             </div>
           </Header>  
           <ChatListStyle>
-            <ChatList messages={prepareMessages()} />
+            <ChatList messages={prepareMessages()} loadMore={handleLoadMore} />
           </ChatListStyle>
           <InputContainer>
             <StyledTextField
