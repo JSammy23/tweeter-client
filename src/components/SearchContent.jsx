@@ -17,6 +17,7 @@ export const SearchInput = styled.input`
   border-radius: 7px; 
   font-size: 1.2em; 
   color: ${props => props.theme.colors.accent};
+  background-color: ${props => props.theme.colors.bgDark};
 
   &:focus {
     outline: none;

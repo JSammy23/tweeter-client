@@ -15,6 +15,7 @@ const ConversationDiv = styled.div`
     width: 100%;
     border-bottom: 1px solid ${props => props.theme.colors.secondary};
     padding: .5em;
+    color: #fff;
 
     &:hover {
         color: ${props => props.theme.colors.accent};
@@ -84,7 +85,7 @@ const ConversationTile = ({ conversation }) => {
             {conversation.unseenMessages && (
                 <NewBadge />
             )}
-            <Typography variant="h5">
+            <Typography variant="h5"  >
                 {participantNames}
             </Typography>
         </div>

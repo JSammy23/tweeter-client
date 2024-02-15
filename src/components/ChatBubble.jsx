@@ -3,24 +3,17 @@ import { format, isToday } from 'date-fns';
 
 import styled from "styled-components"
 
-// const TextBubble = styled.div`
-//     background-color: ${props => props.position === 'right' ? props.theme.colors.primary : props.theme.colors.secondary};
-//     color: ${props => props.position === 'right' ? '#fff' : props.theme.colors.bgLight};
-//     margin: .3em .5em;
-//     padding: .4em .7em;
-//     border-radius: 10em;
-//     font-size: 1.1em;
-// `;
 
 const ChatBubbleWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-self: ${props => props.position === 'right' ? 'flex-end' : 'flex-start'};
     max-width: 85%;
+    color: ${props => props.theme.colors.accent};
 `;
 
 const TextBubble = styled.div`
-    background-color: ${props => props.position === 'right' ? props.theme.colors.primary : props.theme.colors.secondary};
+    background-color: ${props => props.position === 'right' ? '#34a373' : props.theme.colors.secondary};
     color: ${props => props.position === 'right' ? '#fff' : props.theme.colors.bgLight};
     margin: .3em .5em;
     padding: .4em .7em;

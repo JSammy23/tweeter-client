@@ -17,6 +17,14 @@ import { faArrowLeft } from '@fortawesome/fontawesome-free-solid';
 
 const StyledTextField = styled(TextField)`
   width: 100%;
+  
+  & .MuiInputBase-input { 
+    color: #fff; 
+  }
+
+  & .MuiInputBase-input::placeholder { 
+    color: rgba(255, 255, 255, 0.7); 
+  }
 `;
 
 const ChatContainer = styled.div`
