@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RecipientChips from './RecipientChips';
-import { useCreateConversationMutation } from '../api';
+import { useCreateConversationMutation, fetchUsersCommunity } from '../api';
 
 import { Title, Header, Button } from '../styles/styledComponents';
 import { SearchInput } from './SearchContent';
 
 
 
-const NewMessage = () => {
+const NewMessageController = () => {
     const [recipients, setRecipients] = useState([]);
     const [ createConversation ] = useCreateConversationMutation();
     const location = useLocation();
@@ -57,4 +57,4 @@ const NewMessage = () => {
   )
 };
 
-export default NewMessage;
+export default NewMessageController;
