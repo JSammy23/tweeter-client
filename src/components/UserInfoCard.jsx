@@ -19,14 +19,14 @@ const Container = styled.div`
  width: 40%;
 `;
 
-const UserInfoCard = ({ user, showFollowButton = false, onCardClick }) => {
+const UserInfoCard = ({ user, showFollowButton = false, onCardClick, muteHandle = false }) => {
   const currentUser = useSelector(state => state.user.currentUser);
   const handleUserProfileClick = useHandleProfileClick();
 
   // Handler for clicking the card, if provided
   const cardClickHandler = () => {
     if (onCardClick) {
-      onCardClick(user._id);
+      onCardClick(user);
     }
   };
 
@@ -35,7 +35,9 @@ const UserInfoCard = ({ user, showFollowButton = false, onCardClick }) => {
       <UserImage src={user?.profile.profile_picture} onClick={() => handleUserProfileClick(user._id)} />
       <div className='flex column' >
         <Name>{user?.fullName}</Name>
-        <Handle onClick={() => handleUserProfileClick(user._id)}>{user?.username}</Handle>
+        <Handle onClick={!muteHandle && (() => handleUserProfileClick(user._id))}>
+          {user?.username}
+        </Handle>
       </div>
       {showFollowButton && currentUser && user && currentUser._id !== user._id && (
         <Container>
