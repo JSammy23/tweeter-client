@@ -11,7 +11,7 @@ import ExploreContent from "./components/ExploreContent";
 import NotificationContent from "./components/NotificationContent";
 import SearchContent from "./components/SearchContent";
 import MessageContent from "./components/MessageContent";
-import TestComp from './components/TestComp';
+
 
 function App() {
   
@@ -23,7 +23,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         {/* For Testing */}
-        <Route path="/test" element={<TestComp />} />
+        {/* <Route path="/test" element={<TestComp />} /> */}
         <Route path="/*" element={<PrivateRoute>
           <FeedPage>
             <Routes>
