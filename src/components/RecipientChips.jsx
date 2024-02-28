@@ -8,11 +8,11 @@ const RecipientChips = ({ recipients, onRemoveRecipient }) => {
     <Stack direction="row" spacing={1}>
       {recipients.map((recipient) => (
         <Chip
-          key={recipient.id}
+          key={recipient._id}
           label={recipient.username}
           avatar={<Avatar alt="Profile picture" src={recipient.profile_picture}/>}
           variant="outlined"
-          onDelete={() => onRemoveRecipient(recipient.id)}
+          onDelete={() => onRemoveRecipient(recipient._id)}
           deleteIcon={<CancelIcon style={{ color: '#ff1744' }} />}
           sx={{
             height: 'auto',
