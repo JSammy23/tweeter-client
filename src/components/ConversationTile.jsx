@@ -55,13 +55,15 @@ const ConversationTile = ({ conversation }) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
     
-    const handleClose = () => {
-      setAnchorEl(null);
+    const handleClose = (event) => {
+        if (event) event.stopPropagation();
+        setAnchorEl(null);
     };
 
     const handleDeleteConversation = (event) => {
         event.stopPropagation();
         console.log('Deleted Convo');
+        handleClose();
     };
 
     const formatMessageDate = (date) => {
