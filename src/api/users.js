@@ -105,6 +105,26 @@ export const fetchCurrentUser = async () => {
     return currentUser;
 };
 
+// Fetch current user's community
+export const fetchUsersCommunity = async () => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${BASE_URL}/community`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`
+        }
+    })
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    const data = response.json();
+    return data;
+};
+
 // Follow/Unfollow User
 export const followUser = async (userId) => {
     const token = localStorage.getItem('token');
