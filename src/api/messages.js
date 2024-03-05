@@ -17,7 +17,19 @@ export const messagesApi = createApi({
             query: ({ limit = 20, skip = 0 }) => `?limit=${limit}&skip=${skip}`,
         }),
         getConversationsMessages: builder.query({
-            query: ({ limit = 25, skip = 0, conversationId }) => `${conversationId}?limit=${limit}&skip=${skip}`
+            query: ({ page, conversationId }) => `${conversationId}?page=${page}&limit=25`, 
+            // Generate a unique cache key based on the conversationId and page
+            serializeQueryArgs: ({ endpointName }) => {
+                return endpointName;
+            },
+            // Always merge incoming data to the cache entry
+            merge: (currentCache, newItems) => {
+                currentCache.results.push(...newItems.results);
+            },
+            // Refetch when the page arg changes
+            // forceRefetch({ currentArg, previousArg }) {
+            //   return currentArg.page !== previousArg.page;
+            // }
         }),
         createMessage: builder.mutation({
             query: (messageData) => ({

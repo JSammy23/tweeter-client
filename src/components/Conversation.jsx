@@ -72,37 +72,43 @@ const StyledIcon = styled(FontAwesomeIcon)`
 /************ Component ****************/
 
 const Conversation = () => {
-    const [skip, setSkip] = useState(0);
+    const [page, setPage] = useState(0);
     const { conversationId } = useParams();
     const [messageText, setMessageText] = useState('');
     const [createMessage, { isLoading: isCreatingMessage }] = useCreateMessageMutation();
-    const { data, isLoading, isError, refetch } = useGetConversationsMessagesQuery({ limit: 25, skip: skip, conversationId });
+    const { data, isFetching, isLoading, isError } = useGetConversationsMessagesQuery({ page, conversationId });
     const [localMessages, setLocalMessages] = useState([]);
     const currentUser = useSelector(state => state.user.currentUser);
     const navigate = useNavigate();
 
+    const messages = data?.messages;
+
+    // useEffect(() => {
+    //     const socket = io('http://localhost:3000');
+    
+    //     // Join the room for the current conversation
+    //     socket.emit('joinConversation', conversationId);
+    
+    //     // Listen for new messages in this conversation
+    //     socket.on('newMessage', (newMessage) => {
+    //         setLocalMessages(prevMessages => [...prevMessages, newMessage]);
+    //     });
+    
+    //     // Cleanup
+    //     return () => {
+    //         socket.emit('leaveConversation', conversationId);
+    //         socket.off('newMessage');
+    //         socket.close();
+    //     };
+    // }, [conversationId, page]);
+
     useEffect(() => {
-        const socket = io('http://localhost:3000');
-    
-        // Join the room for the current conversation
-        socket.emit('joinConversation', conversationId);
-    
-        // Listen for new messages in this conversation
-        socket.on('newMessage', (newMessage) => {
-            setLocalMessages(prevMessages => [...prevMessages, newMessage]);
-        });
-    
-        // Cleanup
-        return () => {
-            socket.emit('leaveConversation', conversationId);
-            socket.off('newMessage');
-            socket.close();
-        };
-    }, [conversationId, skip]);
+      console.log('Page:', page);
+    }, [page]);
 
     const handleLoadMore = () => {
-        const newSkip = skip + 25;
-        setSkip(newSkip);
+      console.log('handleLoadMore triggered!');
+      setPage(prevPage => prevPage + 1);
     };
 
     const handleSendMessage = async () => {
@@ -123,7 +129,7 @@ const Conversation = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); // Prevent default to avoid newline in case of multiline TextField
+            event.preventDefault(); // Prevent default to avoid newline
             handleSendMessage();
         }
     };
@@ -168,9 +174,9 @@ const Conversation = () => {
         .filter(participant => participant._id !== currentUser._id)
     .map(participant => participant.username).join(', ');
     
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    // if (isFetching) {
+    //     return <div>Loading...</div>;
+    // }
 
     if (isError) {
         return <div>Error loading messages.</div>;

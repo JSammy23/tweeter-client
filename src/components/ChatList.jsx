@@ -25,7 +25,7 @@ const ChatList = ({ messages, loadMore }) => {
 
   return (
     <ChatContainer>
-      {/* <Button variant="contained" onClick={loadMore} >Load More</Button> */}
+      <Button variant="contained" onClick={loadMore} >Load More</Button>
         {messages.map((message, index) => (
             <ChatBubble key={index} message={message}  />
         ))}
