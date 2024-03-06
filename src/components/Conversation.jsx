@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetConversationsMessagesQuery, useCreateMessageMutation, fetchConversationsMessages } from '../api';
+import { useCreateMessageMutation, fetchConversationsMessages } from '../api';
 import { useSelector } from 'react-redux';
 import ChatList from './ChatList';
 import TextField from '@mui/material/TextField';
@@ -100,8 +100,6 @@ const Conversation = () => {
       }
     }, [data?.pages]);
     
-
-
     useEffect(() => {
         const socket = io('http://localhost:3000');
     
@@ -138,6 +136,7 @@ const Conversation = () => {
         }
     };
 
+    // Enter key sends message
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault(); // Prevent default to avoid newline
@@ -146,27 +145,13 @@ const Conversation = () => {
     };
 
     const handleBackClick = () => {
-        navigate(-1);
+        navigate('/messages');
     };
-
-    // Log the messages for debugging purposes
-    // useEffect(() => {
-    //     if (data) {
-    //         console.log(data);
-    //     }
-    // }, [data]);
-
-    useEffect(() => {
-      console.log('Has next page:', hasNextPage);
-    }, [hasNextPage]);
     
-
     const prepareMessages = () => {
         const serverMessages = data ? data.pages.flatMap(page => page.messages) : [];
-
         const combinedMessages = [...serverMessages, ...localMessages];
     
-        // Check if there are no messages
         if (combinedMessages.length === 0) {
             return [];
         }
@@ -188,19 +173,17 @@ const Conversation = () => {
     };
 
     const participantNames = participants
-        .filter(participant => participant._id !== currentUser._id)
+      .filter(participant => participant._id !== currentUser._id)
     .map(participant => participant.username).join(', ');
     
-
     if (status === 'loading') return <h1>Loading...</h1>;
     if (status === 'error') return <h1>Error: {error.message}</h1>;
     
-
     return (
         <ChatContainer>
           <Header>
             <div>
-              {data?.participants && (
+              {participants && (
                 <Typography variant="h5">
                     {participantNames}
                 </Typography>
@@ -224,6 +207,6 @@ const Conversation = () => {
           </InputContainer>
         </ChatContainer>
       );
-}
+};
 
 export default Conversation;
