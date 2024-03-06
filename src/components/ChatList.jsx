@@ -13,7 +13,7 @@ const ChatContainer = styled.div`
 
 const ChatList = ({ messages, loadMore }) => {
     const bottomRef = useRef(null);
-
+    
     useEffect(() => {
         console.log('Scrolling to bottom');
         const timer = setTimeout(() => {
@@ -21,7 +21,7 @@ const ChatList = ({ messages, loadMore }) => {
         }, 100);
 
         return () => clearTimeout(timer);
-    }, [messages]);
+    }, []);
 
   return (
     <ChatContainer>
