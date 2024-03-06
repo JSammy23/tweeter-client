@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import axios from 'axios';
 
 export const messagesApi = createApi({
     reducerPath: 'messagesApi',
@@ -18,14 +19,6 @@ export const messagesApi = createApi({
         }),
         getConversationsMessages: builder.query({
             query: ({ page, conversationId }) => `${conversationId}?page=${page}&limit=25`, 
-            // Generate a unique cache key based on the conversationId and page
-            serializeQueryArgs: ({ endpointName }) => {
-                return endpointName;
-            },
-            // Always merge incoming data to the cache entry
-            merge: (currentCache, newItems) => {
-                currentCache.results.push(...newItems.results);
-            },
             // Refetch when the page arg changes
             // forceRefetch({ currentArg, previousArg }) {
             //   return currentArg.page !== previousArg.page;
@@ -53,3 +46,28 @@ export const {
     useCreateMessageMutation,
     useCreateConversationMutation,
 } = messagesApi;
+
+const BASE_URL = 'http://localhost:3000/messages/'
+
+export const fetchConversationsMessages = async (conversationId, page) => {
+    const token = localStorage.getItem('token');
+    const limit = 25;
+    
+    return axios.get(`${BASE_URL}${conversationId}`, {
+        params: { page, limit },
+        headers: {  Authorization: token }
+    })
+    .then(res => {
+        const totalMessagesHeader = res.headers['x-total-count']; 
+        const totalMessages = parseInt(totalMessagesHeader, 10);
+        const hasNextPage = (page + 1) * limit < totalMessages; 
+        const hasPreviousPage = page > 0;
+
+        return {
+            messages: res.data.messages,
+            participants: res.data.participants,
+            nextPage: hasNextPage ? page + 1 : undefined,
+            previousPage: hasPreviousPage ? page - 1 : undefined,
+        };
+    });
+};
