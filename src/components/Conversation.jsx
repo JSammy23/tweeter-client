@@ -102,31 +102,25 @@ const Conversation = () => {
     
 
 
-    // useEffect(() => {
-    //     const socket = io('http://localhost:3000');
+    useEffect(() => {
+        const socket = io('http://localhost:3000');
     
-    //     // Join the room for the current conversation
-    //     socket.emit('joinConversation', conversationId);
+        // Join the room for the current conversation
+        socket.emit('joinConversation', conversationId);
     
-    //     // Listen for new messages in this conversation
-    //     socket.on('newMessage', (newMessage) => {
-    //         setLocalMessages(prevMessages => [...prevMessages, newMessage]);
-    //     });
+        // Listen for new messages in this conversation
+        socket.on('newMessage', (newMessage) => {
+            setLocalMessages(prevMessages => [...prevMessages, newMessage]);
+        });
     
-    //     // Cleanup
-    //     return () => {
-    //         socket.emit('leaveConversation', conversationId);
-    //         socket.off('newMessage');
-    //         socket.close();
-    //     };
-    // }, [conversationId, page]);
+        // Cleanup
+        return () => {
+            socket.emit('leaveConversation', conversationId);
+            socket.off('newMessage');
+            socket.close();
+        };
+    }, [conversationId]);
 
-    
-
-    // const handleLoadMore = () => {
-    //   console.log('handleLoadMore triggered!');
-    //   setPage(prevPage => prevPage + 1);
-    // };
 
     const handleSendMessage = async () => {
         if (messageText.trim() === '') return;
@@ -156,11 +150,11 @@ const Conversation = () => {
     };
 
     // Log the messages for debugging purposes
-    useEffect(() => {
-        if (data) {
-            console.log(data);
-        }
-    }, [data]);
+    // useEffect(() => {
+    //     if (data) {
+    //         console.log(data);
+    //     }
+    // }, [data]);
 
     useEffect(() => {
       console.log('Has next page:', hasNextPage);
