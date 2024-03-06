@@ -39,7 +39,7 @@ const ChatBubble = ({ message }) => {
 
   return (
     <ChatBubbleWrapper position={message.position}>
-        {message.showUsername && <div>{message.sender.username}</div>}
+        {message.showUsername && <div>{message.sender?.username}</div>}
         <Tooltip title={formattedDate} >
             <TextBubble position={message.position} >{message.text}</TextBubble>
         </Tooltip>
