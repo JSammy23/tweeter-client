@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetConversationsMessagesQuery, useCreateMessageMutation } from '../api';
+import { useGetConversationsMessagesQuery, useCreateMessageMutation, fetchConversationsMessages } from '../api';
 import { useSelector } from 'react-redux';
 import ChatList from './ChatList';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import styled from 'styled-components';
 import { Header } from '../styles/styledComponents';
@@ -72,16 +73,34 @@ const StyledIcon = styled(FontAwesomeIcon)`
 /************ Component ****************/
 
 const Conversation = () => {
-    const [page, setPage] = useState(0);
     const { conversationId } = useParams();
     const [messageText, setMessageText] = useState('');
     const [createMessage, { isLoading: isCreatingMessage }] = useCreateMessageMutation();
-    const { data, isFetching, isLoading, isError } = useGetConversationsMessagesQuery({ page, conversationId });
     const [localMessages, setLocalMessages] = useState([]);
+    const [participants, setParticipants] = useState([]);
     const currentUser = useSelector(state => state.user.currentUser);
     const navigate = useNavigate();
 
-    const messages = data?.messages;
+    const {
+      status,
+      error,
+      data,
+      isFetchingNextPage,
+      hasNextPage,
+      fetchNextPage,
+    } = useInfiniteQuery({
+      queryKey: ['conversationMessages', conversationId], 
+      getNextPageParam: (lastPage, pages) => lastPage.nextPage,
+      queryFn: ({ pageParam = 0 }) => fetchConversationsMessages(conversationId, pageParam),
+    });
+
+    useEffect(() => {
+      if (data?.pages?.[0]?.participants) {
+        setParticipants(data.pages[0].participants);
+      }
+    }, [data?.pages]);
+    
+
 
     // useEffect(() => {
     //     const socket = io('http://localhost:3000');
@@ -102,14 +121,12 @@ const Conversation = () => {
     //     };
     // }, [conversationId, page]);
 
-    useEffect(() => {
-      console.log('Page:', page);
-    }, [page]);
+    
 
-    const handleLoadMore = () => {
-      console.log('handleLoadMore triggered!');
-      setPage(prevPage => prevPage + 1);
-    };
+    // const handleLoadMore = () => {
+    //   console.log('handleLoadMore triggered!');
+    //   setPage(prevPage => prevPage + 1);
+    // };
 
     const handleSendMessage = async () => {
         if (messageText.trim() === '') return;
@@ -145,9 +162,15 @@ const Conversation = () => {
         }
     }, [data]);
 
+    useEffect(() => {
+      console.log('Has next page:', hasNextPage);
+    }, [hasNextPage]);
+    
+
     const prepareMessages = () => {
-        // Combine RTK Query data with local messages
-        const combinedMessages = data ? [...data.messages, ...localMessages] : localMessages;
+        const serverMessages = data ? data.pages.flatMap(page => page.messages) : [];
+
+        const combinedMessages = [...serverMessages, ...localMessages];
     
         // Check if there are no messages
         if (combinedMessages.length === 0) {
@@ -158,7 +181,7 @@ const Conversation = () => {
         combinedMessages.sort((a, b) => new Date(a.date) - new Date(b.date));
     
         return combinedMessages.map((message, index, allMessages) => {
-            const sender = data.participants.find(p => p._id === message.senderId);
+            const sender = participants.find(p => p._id === message.senderId);
             const showUsername = (index === 0 || allMessages[index - 1].senderId !== message.senderId) && message.senderId !== currentUser._id;
         
             return {
@@ -170,17 +193,13 @@ const Conversation = () => {
         });
     };
 
-    const participantNames = data?.participants
+    const participantNames = participants
         .filter(participant => participant._id !== currentUser._id)
     .map(participant => participant.username).join(', ');
     
-    // if (isFetching) {
-    //     return <div>Loading...</div>;
-    // }
 
-    if (isError) {
-        return <div>Error loading messages.</div>;
-    }
+    if (status === 'loading') return <h1>Loading...</h1>;
+    if (status === 'error') return <h1>Error: {error.message}</h1>;
     
 
     return (
@@ -196,7 +215,7 @@ const Conversation = () => {
             </div>
           </Header>  
           <ChatListStyle>
-            <ChatList messages={prepareMessages()} loadMore={handleLoadMore} />
+            <ChatList messages={prepareMessages()} loadMore={() => fetchNextPage()} />
           </ChatListStyle>
           <InputContainer>
             <StyledTextField
