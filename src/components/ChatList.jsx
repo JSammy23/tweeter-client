@@ -7,7 +7,7 @@ import styled from "styled-components";
 const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start; // Default alignment
+  align-items: flex-start; 
   overflow-y: auto;
 `;
 
