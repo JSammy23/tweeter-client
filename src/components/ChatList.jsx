@@ -11,7 +11,7 @@ const ChatContainer = styled.div`
   overflow-y: auto;
 `;
 
-const ChatList = ({ messages, loadMore }) => {
+const ChatList = ({ messages, loadMore, localMessages, isFetching, hasNextPage }) => {
     const bottomRef = useRef(null);
     
     useEffect(() => {
@@ -23,9 +23,28 @@ const ChatList = ({ messages, loadMore }) => {
         return () => clearTimeout(timer);
     }, []);
 
+    useEffect(() => {
+      if (localMessages.length > 0) {
+          console.log('Scrolling to bottom for new message');
+          const timer = setTimeout(() => {
+              bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+  
+          return () => clearTimeout(timer);
+      }
+    }, [localMessages]);
+
   return (
     <ChatContainer>
-      <Button variant="contained" onClick={loadMore} >Load More</Button>
+      {hasNextPage && (
+        <Button 
+        variant="contained" 
+        onClick={loadMore}
+        style={{ margin: '.7em auto', display: 'block' }}
+        disabled={isFetching} >
+         Load More
+        </Button>
+      )}
         {messages.map((message, index) => (
             <ChatBubble key={index} message={message}  />
         ))}

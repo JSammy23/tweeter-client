@@ -192,7 +192,12 @@ const Conversation = () => {
             </div>
           </Header>  
           <ChatListStyle>
-            <ChatList messages={prepareMessages()} loadMore={() => fetchNextPage()} />
+            <ChatList 
+             messages={prepareMessages()} 
+             loadMore={() => fetchNextPage()}
+             localMessages={localMessages}
+             hasNextPage={hasNextPage}
+             isFetching={isFetchingNextPage} />
           </ChatListStyle>
           <InputContainer>
             <StyledTextField
