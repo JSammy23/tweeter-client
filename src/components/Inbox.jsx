@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ConversationTile from './ConversationTile';
 
@@ -8,10 +9,10 @@ import IconButton from '@mui/material/IconButton';
 
 const StyledIconButton = styled(LaunchIcon)`
     color: ${(props) => props.theme.colors.accent};
+`;
 
-`
-
-const Inbox = ({ conversations }) => {
+const Inbox = ({ conversations, hasNext, loadMore, isLoading }) => {
+    const bottomRef = useRef(null);
     const navigate = useNavigate();
 
     const handleNewMessageClick = () => {
@@ -40,6 +41,7 @@ const Inbox = ({ conversations }) => {
                 <div>No conversations available.</div>
             )}
         </div>
+        <div ref={bottomRef} />
     </div>
   )
 }

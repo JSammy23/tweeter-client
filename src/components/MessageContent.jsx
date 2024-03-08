@@ -32,7 +32,11 @@ const MessageContent = () => {
   return (
     <>
         <Routes>
-            <Route path='/' element={<Inbox conversations={conversations} />} />
+            <Route path='/' element={<Inbox 
+             conversations={conversations} 
+             hasNext={hasNextPage} 
+             loadMore={fetchNextPage}
+             isLoading={isFetchingNextPage} />} />
             <Route path="/:conversationId" element={<Conversation />} />
             <Route path="/compose" element={<NewMessageController />} />
         </Routes>
