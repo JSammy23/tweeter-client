@@ -19,10 +19,6 @@ export const messagesApi = createApi({
         }),
         getConversationsMessages: builder.query({
             query: ({ page, conversationId }) => `${conversationId}?page=${page}&limit=25`, 
-            // Refetch when the page arg changes
-            // forceRefetch({ currentArg, previousArg }) {
-            //   return currentArg.page !== previousArg.page;
-            // }
         }),
         createMessage: builder.mutation({
             query: (messageData) => ({
@@ -47,7 +43,27 @@ export const {
     useCreateConversationMutation,
 } = messagesApi;
 
-const BASE_URL = 'http://localhost:3000/messages/'
+const BASE_URL = 'http://localhost:3000/messages/';
+
+export const fetchConversations = async (page) => {
+    const token = localStorage.getItem('token');
+    const limit = 25;
+
+    return axios.get(BASE_URL, {
+        params: { limit },
+        headers: { Authorization: token }
+    }).then(res => {
+        const totalConversationCount = parseInt(res.headers['x-total-count'], 10);
+        const hasNextPage = (page + 1) * limit < totalConversationCount;
+        const hasPreviousPage = page > 0;
+
+        return {
+            conversations: res.data,
+            nextPage: hasNextPage ? page + 1 : undefined,
+            previousPage: hasPreviousPage ? page - 1 : undefined
+        };
+    });
+};
 
 export const fetchConversationsMessages = async (conversationId, page) => {
     const token = localStorage.getItem('token');

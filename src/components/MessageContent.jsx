@@ -1,32 +1,33 @@
-import { useState } from 'react';
-import { useGetConversationsQuery } from '../api/messages';
-import { Routes, Route, useParams } from "react-router-dom";
+import { fetchConversations } from '../api/messages';
+import { Routes, Route } from "react-router-dom";
 import Inbox from './Inbox';
 import Conversation from './Conversation';
 import NewMessageController from './NewMessageController';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 
 const MessageContent = () => {
-    const [skip, setSkip] = useState(0);
-    const { data: conversations, error, isLoading } = useGetConversationsQuery({ limit: 20, skip: skip });
+    const {
+      status,
+      error,
+      data,
+      isFetchingNextPage,
+      hasNextPage,
+      fetchNextPage,
+    } = useInfiniteQuery({
+      queryKey: ['conversations'], 
+      getNextPageParam: (lastPage, pages) => lastPage.nextPage,
+      queryFn: ({ pageParam = 0 }) => fetchConversations(pageParam)
+    });
 
-    const handleLoadMore = () => {
-        const newSkip = skip + 20;
-        setSkip(newSkip);
-    };
-
-    if (isLoading) {
-        return <div>Loading conversations...</div>;
-    }
-
-    if (error) {
-        // Render error message or UI
-        return <div>Error loading conversations: {error.message}</div>;
-    }
+    const conversations = data?.pages.flatMap(page => page.conversations) ?? [];
     
     if (conversations) {
         console.log(conversations);
     }
+
+    if (status === "loading") return <h1>Loading...</h1>
+    if (status === "error") return <h1>{JSON.stringify(error)}</h1>
 
   return (
     <>
