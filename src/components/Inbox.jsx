@@ -11,7 +11,7 @@ const StyledIconButton = styled(LaunchIcon)`
     color: ${(props) => props.theme.colors.accent};
 `;
 
-const Inbox = ({ conversations, hasNext, loadMore, isLoading }) => {
+const Inbox = ({ conversations, hasNext, loadMore, isLoading, updateReadStatus }) => {
     const bottomRef = useRef(null);
     const navigate = useNavigate();
 
@@ -35,7 +35,10 @@ const Inbox = ({ conversations, hasNext, loadMore, isLoading }) => {
         <div>
             {conversations && conversations.length > 0 ? (
                 conversations.map(conversation => (
-                    <ConversationTile key={conversation._id} conversation={conversation} />
+                    <ConversationTile 
+                      key={conversation._id} 
+                      conversation={conversation}
+                      updateReadStatus={updateReadStatus} />
                 ))
             ) : (
                 <div>No conversations available.</div>

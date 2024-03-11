@@ -9,6 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { format, isToday } from 'date-fns';
 import styled from 'styled-components';
 
+/**************** Styling  ********************/
+
 const ConversationDiv = styled.div`
     display: flex;
     justify-content: space-between;
@@ -40,13 +42,16 @@ const NewBadge = styled.div`
     box-shadow: 0 0 6px ${props => props.theme.colors.primary};
 `;
 
-const ConversationTile = ({ conversation }) => {
+/**************** Component  ********************/
+
+const ConversationTile = ({ conversation, updateReadStatus }) => {
     const currentUser = useSelector(state => state.user.currentUser);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const isConversationMenuOpen = Boolean(anchorEl);
 
     const handleConversationClick = () => {
+        updateReadStatus(conversation._id);
         navigate(`/messages/${conversation._id}`);
     };
 
