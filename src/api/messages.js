@@ -87,3 +87,36 @@ export const fetchConversationsMessages = async (conversationId, page) => {
         };
     });
 };
+
+export const softDeleteConversation = async (conversationId) => {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+        const response = await axios.delete(BASE_URL + conversationId, {
+            headers: {
+                'Authorization': token
+            }
+        });
+
+        // Check response status
+        if (response.status === 200) {
+            console.log('Conversation soft deleted successfully:', response.data);
+        } else if (response.status === 204) {
+            console.log('User has already deleted this conversation:', response.data);
+        } else {
+            console.error('Unexpected response status:', response.status);
+        }
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.error('Error response:', error.response.data);
+        } else if (error.request) {
+            console.error('Error request:', error.request);
+        } else {
+            console.error('Error', error.message);
+        }
+    }
+};

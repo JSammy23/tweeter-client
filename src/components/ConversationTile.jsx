@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { format, isToday } from 'date-fns';
 import styled from 'styled-components';
+import { softDeleteConversation } from '../api';
 
 /**************** Styling  ********************/
 
@@ -67,7 +68,7 @@ const ConversationTile = ({ conversation, updateReadStatus }) => {
 
     const handleDeleteConversation = (event) => {
         event.stopPropagation();
-        console.log('Deleted Convo');
+        softDeleteConversation(conversation._id)
         handleClose();
     };
 
