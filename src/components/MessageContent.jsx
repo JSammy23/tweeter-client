@@ -70,6 +70,6 @@ const MessageContent = () => {
         </Routes>
     </>
   )
-}
+};
 
 export default MessageContent;
