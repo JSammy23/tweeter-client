@@ -9,6 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { format, isToday } from 'date-fns';
 import styled from 'styled-components';
 import { softDeleteConversation } from '../api';
+import { useQueryClient } from '@tanstack/react-query';
+
 
 /**************** Styling  ********************/
 
@@ -50,6 +52,7 @@ const ConversationTile = ({ conversation, updateReadStatus }) => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const isConversationMenuOpen = Boolean(anchorEl);
+    const queryClient = useQueryClient();
 
     const handleConversationClick = () => {
         updateReadStatus(conversation._id);
@@ -66,10 +69,11 @@ const ConversationTile = ({ conversation, updateReadStatus }) => {
         setAnchorEl(null);
     };
 
-    const handleDeleteConversation = (event) => {
+    const handleDeleteConversation = async (event) => {
         event.stopPropagation();
-        softDeleteConversation(conversation._id)
+        await softDeleteConversation(conversation._id)
         handleClose();
+        queryClient.invalidateQueries('conversations');
     };
 
     const formatMessageDate = (date) => {
@@ -103,8 +107,17 @@ const ConversationTile = ({ conversation, updateReadStatus }) => {
                 id='conversation-menu'
                 anchorEl={anchorEl}
                 open={isConversationMenuOpen}
-                onClose={handleClose} >
-                <MenuItem onClick={handleDeleteConversation} >Delete Conversation</MenuItem>
+                onClose={handleClose}
+                sx={{
+                    '& .MuiPaper-root': { 
+                      bgcolor: 'darkslategray', 
+                    }
+                }} >
+                <MenuItem 
+                    onClick={handleDeleteConversation}
+                    sx={{
+                        color: 'lightgray',
+                    }} >Delete Conversation</MenuItem>
             </Menu>
             <TweetDate>
                 {conversation.lastMessageDate ? formatMessageDate(conversation.lastMessageDate) : null}
